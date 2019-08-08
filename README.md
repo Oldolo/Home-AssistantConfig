@@ -8,7 +8,7 @@ The setup is running a Raspberry Pi 3 Model B.
 ### Hardware
 
 *  Ikea Trådfri
-*  Google Home
+*  Google Home and Cast
 *  AEON Z-Stick
    *  Danalock V3 (+ Danapad, not connected to HA)
 *  Sensibo
@@ -24,7 +24,7 @@ The setup is running a Raspberry Pi 3 Model B.
 
 *  Pi-Hole
 *  Google Calendar
-  *  Garbage Collection
+   *  Garbage Collection
 *  Met.no
 *  Waze Travel time
 
@@ -33,6 +33,6 @@ The setup is running a Raspberry Pi 3 Model B.
 *  Heating and Cooling with AC
 *  Front door with Danalock
 *  Notifications with TTS and Push
-  *  Garbage Collection
-  *  ETA after leaving work
-  *  Charging car reminder
+   *  Garbage Collection
+   *  ETA after leaving work
+   *  Charging car reminder
