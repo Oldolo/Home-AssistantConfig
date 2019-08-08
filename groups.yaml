@@ -1,0 +1,8 @@
+climate_automation:
+   - automation.night_savings
+   - automation.set_away_mode
+   - automation.set_home_mode
+   - automation.turn_down_the_heat_daytime
+   - automation.turn_on_for_the_daytime
+   - automation.turn_up_the_heat_daytime
+   - automation.calm_down_i_am_waking_up

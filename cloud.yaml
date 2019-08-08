@@ -1,0 +1,53 @@
+  google_actions:
+    entity_config:
+      light.gulv:
+        name: Gulvlampe
+        aliases:
+         - leselys
+         - stua
+         - stue
+        room: Stue
+      light.hylle:
+        name: Hyllelampe
+        aliases:
+         - bokhylle
+         - stua
+         - stue
+        room: Stue
+      light.gjesterom:
+        name: Gjesterom
+        aliases:
+         - Soverom
+        room: Gjesterom
+      light.olivia:
+        name: Oliva Tak
+        aliases:
+         - Oliva sitt rom
+         - prinsessa
+        room: Oliva
+      light.tradfri_bulb_6:
+        name: Balong
+        aliases:
+         - Oliva sitt rom
+         - prinsessa
+        room: Oliva
+      light.tak_soverom:
+        name: Soverom Tak
+        aliases:
+          - Soverom
+        room: Soverom
+      light.leselys_soverom:
+        name: Nattlampe
+        aliases:
+         - Soverom
+        room: Soverom
+      climate.samsung:
+        name: Peisen
+        aliases:
+         - Blåser
+        room: Kjøkken
+      lock.polycontrol_danalock_v3_btze_locked_2:
+        name: Døra
+        aliases:
+         - Lås
+        room: Gang

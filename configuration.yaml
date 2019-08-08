@@ -1,0 +1,428 @@
+homeassistant:
+  unit_system: metric
+  time_zone: CET
+  customize: !include customize.yaml
+
+zone:
+  -  name: Home
+     latitude: !secret homelatitude
+     longitude: !secret homelongitude
+     elevation: 8
+     radius: 30
+     icon: mdi:home
+
+  -  name: Jobb
+     latitude: !secret worklatitude
+     longitude: !secret worklongitude
+     radius: 200
+     icon: mdi:office-building
+
+  -  name: Jobb KF
+     latitude: !secret work2latitude
+     longitude: !secret work2longitude
+     radius: 75
+     icon: mdi:office-building
+
+  -  name: Jobb Fagerdalen
+     latitude: !secret work3latitude
+     longitude: !secret work3longitude
+     radius: 75
+     icon: mdi:office-building
+
+  - name: Hytta
+    latitude: !secret cabinlatitude
+    longitude: !secret cabinlongitude
+    radius: 300
+    icon: mdi:snowflake
+
+hacs:
+  token: !secret hacs_token
+
+# Show links to resources in log and frontend
+#introduction:
+
+# Enables the frontend
+frontend:
+
+# Enables configuration UI
+config:
+
+# Uncomment this if you are using SSL/TLS, running in Docker container, etc.
+# http:
+#   base_url: example.duckdns.org:8123
+
+# Checks for available updates
+# Note: This component will send some information about your system to
+# the developers to assist with development of Home Assistant.
+# For more information, please see:
+# https://home-assistant.io/blog/2016/10/25/explaining-the-updater/
+updater:
+  # Optional, allows Home Assistant developers to focus on popular components.
+  # include_used_components: true
+
+# Discover some devices automatically
+discovery:
+  ignore:
+    - apple_tv
+    - igd
+
+# Allows you to issue voice commands from the frontend in enabled browsers
+conversation:
+
+# Enables support for tracking state changes over time
+history:
+
+# View all events in a logbook
+logbook:
+
+# Enables a map showing the location of tracked devices
+map:
+
+# Track the sun
+sun:
+
+# Health data
+system_health:
+
+
+device_tracker:
+  - platform: iphonedetect
+    consider_home: 30
+    hosts:
+      hostname1: 10.0.0.73
+      hostname2: 10.0.0.125
+
+#Person
+person:
+  - name: Ole Andre
+    id: 007
+    user_id: 8d2c1c59d51f4e97bee478a7801e2b9d
+    device_trackers:
+      - device_tracker.oleandre
+      - device_tracker.hostname2
+  - name: Christina
+    id: 008
+    user_id: 3a0c8cfb0d104f0facf394fb9030c6d7
+    device_trackers:
+      - device_tracker.christina
+      - device_tracker.hostname1
+
+recorder:
+  purge_keep_days: 3
+  purge_interval: 1
+
+
+notify:
+  - name: all
+    platform: group
+    services:
+      - service: ios_oleandre
+      - service: ios_christina
+
+volkswagencarnet:
+    username: !secret email
+    password: !secret volkswagencarnet
+    scan_interval:
+        minutes: 5
+    name:
+        wvwzzzaazfd902956: "Upsen"
+
+binary_sensor:
+  - platform: workday
+    country: "NO"
+
+  - platform: workday
+    country: "NO"
+    workdays: [mon, tue, wed, thu]
+    days_offset: 1
+
+switch:
+  - platform: template
+    switches:
+      climate_automation:
+        value_template: "{{ is_state('group.climate_automation','on') }}"
+        turn_on:
+          - service: homeassistant.turn_on
+            entity_id: group.climate_automation
+        turn_off:
+          - service: homeassistant.turn_off
+            entity_id: group.climate_automation
+
+camera:
+  - platform: generic
+    name: Weather dvergsnes
+    still_image_url: https://www.yr.no/sted/Norge/Vest-Agder/Kristiansand/Dvergsnes/meteogram.svg
+    content_type: 'image/svg+xml'
+
+  - platform: generic
+    name: Weather hovden
+    still_image_url: https://www.yr.no/sted/Norge/Aust-Agder/Bykle/Hovden/meteogram.svg
+    content_type: 'image/svg+xml'
+
+spotcast:
+  username: !secret spotify_username
+  password: !secret spotify_password
+
+nissan_leaf:
+  username: !secret email
+  password: !secret nissanpassword
+  region: "NE"
+
+# Sensors
+input_datetime:
+  away:
+    name: Reiser
+    has_date: true
+    has_time: true
+  home:
+    name: Hjemme
+    has_date: true
+    has_time: true
+
+input_boolean:
+  ferie:
+    name: Feriemodus
+    icon: mdi:beach
+  varme:
+    name: Varme Hytta
+    icon: mdi:radiator
+    initial: off
+  autolock:
+    name: Autolås
+    icon: mdi:lock-reset
+    initial: on
+  cooling:
+    name: Kjøling
+    icon: mdi:air-conditioner
+    initial: off
+
+
+http:
+  api_password: !secret http_password
+  base_url: !secret base_url
+  ssl_certificate: /ssl/fullchain.pem
+  ssl_key: /ssl/privkey.pem
+
+climate:
+  - platform: sensibo
+    api_key: !secret sensibo_apikey
+
+  - platform: mill
+    username: !secret email
+    password: !secret millpassword
+
+netatmo:
+  api_key: !secret netatmo_apikey
+  secret_key: !secret netatmo_secretkey
+  username: !secret email
+  password: !secret netatmo_password
+  discovery: false
+
+tibber:
+  access_token: !secret tibber_key
+
+sensor:
+
+  - platform: spotcast
+
+  - platform: ical
+    name: "Soppel"
+    url: !secret soppel_calendar
+
+  - platform: waze_travel_time
+    name: Ole Andre hjemme
+    origin: person.ole_andre
+    destination: zone.home
+    region: 'EU'
+
+  - platform: waze_travel_time
+    name: Christina hjemme
+    origin: person.christina
+    destination: zone.home
+    region: 'EU'
+
+  - platform: time_date
+    display_options:
+      - 'time_date'
+
+  - platform: fitbit
+    clock_format: 24H
+    unit_system: metric
+    monitored_resources:
+      - "body/weight"
+      - "devices/battery"
+
+
+  - platform: pi_hole
+    host: localhost:4865
+    ssl: true
+    verify_ssl: false
+    monitored_conditions:
+      - ads_blocked_today
+      - ads_percentage_today
+      - dns_queries_today
+      - domains_being_blocked
+
+  - platform: netatmo
+    station: Dvergsnesstien
+    modules:
+        - Ute
+        - Inne
+
+  - platform: netatmo
+    station: Badstogdalen
+    modules:
+        - Utvendig
+        - Loft
+
+  - platform: template
+    sensors:
+
+      collect_next_date:
+        friendly_name: "Neste Tømmedag"
+        value_template: '{{ (as_timestamp(states.sensor.soppel_event_0.attributes.start) | timestamp_custom("%j") | int) - (as_timestamp(now()) | timestamp_custom("%-j") | int) }}'
+        icon_template: >
+          {% if 'Sort' in states.sensor.soppel_event_0.attributes.name %}
+            mdi:trash-can
+          {% elif 'Metal' in states.sensor.soppel_event_0.attributes.name %}
+            mdi:spray
+          {% else %}
+            mdi:recycle
+          {% endif %}
+
+      collect_next_type:
+        friendly_name: "Neste Tømmetype"
+        value_template: >
+          {% if 'Sort' in states.sensor.soppel_event_0.attributes.name %}
+            Restavfall
+          {% elif 'Metal' in states.sensor.soppel_event_0.attributes.name %}
+            Restavfall, Glass og Metal
+          {% else %}
+            Restavfall, Papir
+          {% endif %}
+        icon_template: >
+          {% if 'Sort' in states.sensor.soppel_event_0.attributes.name %}
+            mdi:trash-can
+          {% elif 'Metal' in states.sensor.soppel_event_0.attributes.name %}
+            mdi:spray
+          {% else %}
+            mdi:recycle
+          {% endif %}
+
+      samsung_temp:
+        value_template: '{{ states.climate.samsung.attributes.current_temperature}}'
+        unit_of_measurement: '°C'
+
+      samsung_settemp:
+        value_template: '{{ states.climate.samsung.attributes.temperature}}'
+        unit_of_measurement: '°C'
+
+      powerprice:
+        value_template: '{{ states.sensor.electricity_price_dvergsnesstien_7.state | round(2)}}'
+        unit_of_measurement: 'NOK'
+
+      accumulatedcost:
+        value_template: '{{ states.sensor.real_time_consumption_dvergsnesstien_7.attributes.accumulatedCost | round(2)}}'
+        unit_of_measurement: 'NOK'
+
+      accumulatedconsumption:
+        value_template: '{{ states.sensor.real_time_consumption_dvergsnesstien_7.attributes.accumulatedConsumption | round(2)}}'
+        unit_of_measurement: 'KWh'
+
+      averagepower:
+        value_template: '{{ states.sensor.real_time_consumption_dvergsnesstien_7.attributes.averagePower }}'
+        unit_of_measurement: 'W'
+
+      currentphase1:
+        value_template: '{{ states.sensor.real_time_consumption_dvergsnesstien_7.attributes.currentPhase1 }}'
+        unit_of_measurement: 'Amp'
+
+      currentphase2:
+        value_template: '{{ states.sensor.real_time_consumption_dvergsnesstien_7.attributes.currentPhase2 }}'
+        unit_of_measurement: 'Amp'
+
+      currentphase3:
+        value_template: '{{ states.sensor.real_time_consumption_dvergsnesstien_7.attributes.currentPhase3 }}'
+        unit_of_measurement: 'Amp'
+
+      price_level:
+        value_template: '{{ states.sensor.electricity_price_dvergsnesstien_7.attributes.price_level }}'
+
+      away:
+        value_template: '{{ (states.input_datetime.away.attributes.timestamp | int | timestamp_custom("%H:%M, %Y-%m-%d")) }}'
+
+      home:
+        value_template: '{{ (states.input_datetime.home.attributes.timestamp | int | timestamp_custom("%H:%M, %Y-%m-%d")) }}'
+
+      vindhastighet_tekst:
+        friendly_name: 'Vindhastighet'
+        icon_template: mdi:weather-windy
+        value_template: >
+          {% set vind = (states.weather.home.attributes["wind_speed"]|float/3.6)|round(1) %}
+            {% if   vind|float <   0.3 %}Stille, {{vind}} m/s
+            {% elif vind|float <   1.6 %}Flau vind, {{vind}} m/s
+            {% elif vind|float <   3.4 %}Svak vind, {{vind}} m/s
+            {% elif vind|float <   5.5 %}Lett bris, {{vind}} m/s
+            {% elif vind|float <   8.0 %}Laber bris, {{vind}} m/s
+            {% elif vind|float <  10.8 %}Frisk bris, {{vind}} m/s
+            {% elif vind|float <  13.9 %}Liten kuling, {{vind}} m/s
+            {% elif vind|float <  17.2 %}Stiv kuling, {{vind}} m/s
+            {% elif vind|float <  20.8 %}Sterk kuling, {{vind}} m/s
+            {% elif vind|float <  24.5 %}Liten storm, {{vind}} m/s
+            {% elif vind|float <  28.5 %}Full storm, {{vind}} m/s
+            {% elif vind|float <  32.7 %}Sterk storm, {{vind}} m/s
+            {% elif vind|float >= 32.7 %}Orkan, {{vind}} m/s
+            {% else %} {{vind}} m/s
+          {% endif %}
+
+
+      wind_direction_text:
+       friendly_name: 'Vindretning'
+       icon_template: mdi:compass
+       value_template: >-
+        {% set wind_dir = states.weather.home.attributes["wind_bearing"] %}
+        {% if wind_dir | float<=23 %}Nord
+        {% elif wind_dir | float>338 %}Nord
+        {% elif 23 < (wind_dir|float) <=68 %}Nordøst
+        {% elif 68 < (wind_dir|float) <=113 %}Øst
+        {% elif 113 < (wind_dir|float) <=158 %}Sørøst
+        {% elif 158 < (wind_dir|float) <=203 %}Sør
+        {% elif 203 < (wind_dir|float) <=248 %}Sørvest
+        {% elif 248 < (wind_dir|float) <=293 %}Vest
+        {% elif 293 < (wind_dir|float) <=338 %}Nordvest
+        {%- endif %}
+
+      oleandre_time_of_arrival:
+       friendly_name: Time I get home
+       entity_id: sensor.time_date
+       value_template: >
+        {% set minutes = states('sensor.ole_andre_hjemme') | int %}
+        {{ (as_timestamp(now()) + (minutes * 60)) | timestamp_custom('%H:%M') }}
+
+      christina_time_of_arrival:
+       friendly_name: Time I get home
+       entity_id: sensor.time_date
+       value_template: >
+        {% set minutes = states('sensor.christina_hjemme') | int %}
+        {{ (as_timestamp(now()) + (minutes * 60)) | timestamp_custom('%H:%M') }}
+
+# Text to speech
+tts:
+  - platform: google_translate
+    service_name: google_say
+    language: 'no'
+
+media_player:
+  - platform: spotify
+    client_id: !secret spotify_key
+    client_secret: !secret spotify_secretkey
+
+# Cloud
+cloud: !include cloud.yaml
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+
+
+lovelace:
+  mode: yaml

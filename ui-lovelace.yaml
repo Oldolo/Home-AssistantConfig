@@ -1,0 +1,367 @@
+resources:
+  - url: /community_plugin/simple-thermostat/simple-thermostat.js
+    type: module
+  - url: /community_plugin/weather-card/weather-card.js
+    type: module
+  - url: /community_plugin/lovelace-slider-entity-row/slider-entity-row.js
+    type: module
+  - url: /community_plugin/secondaryinfo-entity-row/secondaryinfo-entity-row.js
+    type: js
+  - url: /local/card-tools.js
+    type: js
+  - url: /community_plugin/mini-graph-card/mini-graph-card.js
+    type: module
+  - url: /community_plugin/mini-media-player/mini-media-player.js
+    type: module
+  - url: /community_plugin/button-card/button-card.js
+    type: module
+
+
+
+views:
+    # View tab title.
+  - icon: mdi:home-assistant
+    title: Hjemme
+    cards:
+
+      - type: custom:simple-thermostat
+        entity: climate.samsung
+        icon: mdi:air-conditioner
+        sensors:
+          - entity: sensor.netatmo_inne_temperature
+            name: Stue
+        hide:
+          state: true
+
+      - type: entities
+        entities:
+          - entity: input_boolean.cooling
+            name: Kjøling
+
+      - type: entities
+        entities:
+          - entity: lock.poly_control_danalock_v3_btze_locked
+            name: Lås
+          - entity: input_boolean.autolock
+            name: Automatisk Lås
+
+
+      - type: entities
+        entities:
+          - type: section
+            label: Stue
+          - type: custom:slider-entity-row
+            entity: light.stue_gulv
+            name: Gulv
+            toggle: true
+            hide_when_off: true
+          - type: custom:slider-entity-row
+            entity: light.stue_hylle
+            name: Hylle
+            toggle: true
+            hide_when_off: true
+          - type: section
+            label: Gjesterom
+          - type: custom:slider-entity-row
+            entity: light.tak_gjesterom
+            name: Tak
+            toggle: true
+            hide_when_off: true
+          - type: section
+            label: Olivia sitt rom
+          - type: custom:slider-entity-row
+            entity: light.tak_olivia
+            name: Tak
+            toggle: true
+            hide_when_off: true
+          - type: custom:slider-entity-row
+            entity: light.sovelys_olivia
+            name: Sovelys
+            toggle: true
+            hide_when_off: true
+          - type: section
+            label: Soverom
+          - type: custom:slider-entity-row
+            entity: light.tak_soverom
+            name: Tak
+            toggle: true
+            hide_when_off: true
+          - type: custom:slider-entity-row
+            entity: light.leselys_soverom
+            name: Leselys
+            toggle: true
+            hide_when_off: true
+
+  - icon: mdi:car
+    title: Bil
+    cards:
+
+      - type: entities
+        entities:
+          - type: section
+            label: Leaf
+          - entity: sensor.leaf1olea_charge
+            name: Batteri
+          - entity: sensor.leaf1olea_range_ac
+            name: Rekkevidde
+          - entity: switch.leaf1olea_climate_control
+            name: Varme i bilen
+          - type: call-service
+            name: Start Lading
+            service: nissan_leaf.start_charge
+            service_data:
+              vin: !secret nissanvin
+          - type: call-service
+            name: Oppdater Info
+            service: nissan_leaf.update
+            service_data:
+              vin: !secret nissanvin
+
+      - type: entities
+        entities:
+          - type: section
+            label: Upsen
+          - entity: sensor.upsen_battery_level
+            name: Batteri
+          - entity: sensor.upsen_electric_range
+            name: Rekkevidde
+          - entity: sensor.upsen_charging_time_left
+            name: Tid før full
+          - entity: sensor.upsen_climatisation_target_temperature
+            name: Ønsket temp
+          - entity: switch.upsen_climatisation
+            name: Slå på A/C
+          - entity: switch.upsen_window_heater
+            name: Rear Window
+          - entity: lock.upsen_door_locked
+            name: Lås
+
+  - icon: mdi:music
+    title: Musikk
+    cards:
+
+      - type: entities
+        entities:
+          - type: custom:mini-media-player
+            entity: media_player.spotify
+            group: true
+            source: icon
+            info: short
+            hide:
+              volume: true
+              power: true
+              shuffle: false
+            shortcuts:
+              columns: 5 # Max buttons per row
+              buttons:
+                - name: Coffeehouse
+                  type: service
+                  id: spotcast.start
+                  data:
+                    entity_id: media_player.2etg
+                    uri: spotify:user:spotify:playlist:37i9dQZF1DX6ziVCJnEm59
+                    random_song: true
+                - name: Motivation Mix
+                  type: service
+                  id: spotcast.start
+                  data:
+                    entity_id: media_player.2etg
+                    uri: spotify:user:spotify:playlist:37i9dQZF1DXdxcBWuJkbcy
+                    random_song: true
+                - name: Feel Good
+                  type: service
+                  id: spotcast.start
+                  data:
+                    entity_id: media_player.2etg
+                    uri: spotify:user:spotify:playlist:37i9dQZF1DX1g0iEXLFycr
+                    random_song: true
+                - name: Summer Acoustic
+                  type: service
+                  id: spotcast.start
+                  data:
+                    entity_id: media_player.2etg
+                    uri: spotify:user:spotify:playlist:37i9dQZF1DWUNIrSzKgQbP
+                - name: Barnesanger
+                  type: service
+                  id: spotcast.start
+                  data:
+                    entity_id: media_player.2etg
+                    uri: spotify:user:christina.fjhtm:playlist:0xQ40V1xVDnh8yGb5UrggS
+                - icon: mdi:home
+                  type: service
+                  id: spotcast.start
+                  data:
+                    entity_id: media_player.alle
+                - icon: mdi:home-floor-2
+                  type: service
+                  id: spotcast.start
+                  data:
+                    entity_id: media_player.2etg
+                - icon: mdi:toilet
+                  type: service
+                  id: spotcast.start
+                  data:
+                    entity_id: media_player.bad
+                - icon: mdi:speaker
+                  type: service
+                  id: spotcast.start
+                  data:
+                    entity_id: media_player.chromecastaudio2230
+                - icon: mdi:sofa
+                  type: service
+                  id: spotcast.start
+                  data:
+                    entity_id: media_player.stue
+          - type: custom:mini-media-player
+            entity: media_player.alle
+            group: true
+            hide:
+              controls: true
+              power: true
+              progress: true
+              info: true
+          - type: custom:mini-media-player
+            entity: media_player.2etg
+            group: true
+            hide:
+              controls: true
+              power: true
+              progress: true
+              info: true
+          - type: custom:mini-media-player
+            entity: media_player.bad
+            group: true
+            hide:
+              controls: true
+              power: true
+              progress: true
+              info: true
+          - type: custom:mini-media-player
+            entity: media_player.stue
+            group: true
+            hide:
+              controls: true
+              power: true
+              progress: true
+              info: true
+          - type: custom:mini-media-player
+            entity: media_player.chromecastaudio2230
+            group: true
+            hide:
+              controls: true
+              power: true
+              progress: true
+              info: true
+
+  - icon: mdi:information
+    title: Informasjon
+    cards:
+
+      - type: custom:weather-card
+        entity: weather.home
+
+      - type: picture-entity
+        title: Yr
+        entity: camera.weather_dvergsnes
+        show_name: false
+        show_state: false
+
+      - type: entities
+        entities:
+          - sensor.wind_direction_text
+          - sensor.vindhastighet_tekst
+          - sensor.netatmo_ute_temperature
+
+      - type: entities
+        entities:
+          - entity: switch.climate_automation
+            icon: mdi:auto-fix
+            name: Skal jeg bare fikse?
+          - entity: input_datetime.away
+            format: datetime
+          - entity: input_datetime.home
+            format: datetime
+
+      - type: glance
+        entities:
+          - entity: sensor.collect_next_date
+
+
+      - type: custom:mini-graph-card
+        icon: mdi:home-thermometer
+        labels: true
+        points_per_hour: 2
+        entities:
+          - entity: sensor.samsung_temp
+            name: Kjøkken
+          - entity: sensor.netatmo_inne_temperature
+            name: Stue
+          - entity: sensor.samsung_settemp
+            name: Satt temp
+
+      - type: entities
+        entities:
+          - entity: sensor.real_time_consumption_dvergsnesstien_7
+            name: Forbruk
+          - entity: sensor.averagepower
+            icon: mdi:power-plug
+            name: Forbruk gjennomsnitt
+          - entity: sensor.accumulatedconsumption
+            icon: mdi:power-plug
+            name: Forbruk i dag
+          - entity: sensor.powerprice
+            icon: mdi:cash-multiple
+            name: Pris
+          - entity: sensor.accumulatedcost
+            icon: mdi:cash-multiple
+            name: Pris i dag
+          - entity: sensor.currentphase1
+            icon: mdi:power-plug
+            name: Fase 1
+          - entity: sensor.currentphase2
+            icon: mdi:power-plug
+            name: Fase 2
+          - entity: sensor.currentphase3
+            icon: mdi:power-plug
+            name: Fase 3
+
+  - icon: mdi:run
+    title: Brukere
+    cards:
+
+      - type: glance
+        entities:
+          - entity: person.ole_andre
+            name: Ole Andre
+          - entity: person.christina
+            name: Christina
+          - entity: device_tracker.nissan_leaf_leaf1olea
+            name: Leaf
+          - entity: device_tracker.upsen
+            name: Upsen
+
+
+  - icon: mdi:snowflake
+    title: Hytta
+    cards:
+
+
+      - type: custom:weather-card
+        entity: weather.hytta
+
+      - type: picture-entity
+        title: Yr
+        entity: camera.weather_hovden
+        show_name: false
+        show_state: false
+
+      - type: custom:simple-thermostat
+        entity: climate.soverom
+        icon: mdi:radiator
+        sensors:
+          - entity: sensor.netatmo_loft_temperature
+            name: Loft
+
+      - type: entities
+        entities:
+          - input_boolean.varme

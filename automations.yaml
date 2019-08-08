@@ -1,0 +1,494 @@
+# For Climate Control
+
+- alias: 'AC - Turn down the heat - Daytime'
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.netatmo_inne_temperature
+      above: 21.5
+  condition:
+    condition: and
+    conditions:
+      - condition: time
+        after: '04:00:00'
+        before: '22:00:00'
+      - condition: state
+        entity_id: input_boolean.ferie
+        state: 'off'
+  action:
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.samsung
+        temperature: 19
+    - service: climate.set_fan_mode
+      data:
+        entity_id: climate.samsung
+        fan_mode: quiet
+    - service: climate.set_swing_mode
+      data:
+        entity_id: climate.samsung
+        swing_mode: stopped
+
+- alias: 'AC - Turn up the heat - Daytime'
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.netatmo_inne_temperature
+      below: 21.2
+  condition:
+    condition: and
+    conditions:
+      - condition: time
+        after: '04:00:00'
+        before: '22:00:00'
+      - condition: state
+        entity_id: input_boolean.ferie
+        state: 'off'
+  action:
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.samsung
+        temperature: 22
+
+- alias: 'AC - Night Savings'
+  trigger:
+    - platform: time
+      at: '22:00:00'
+  condition:
+    - condition: state
+      entity_id: input_boolean.ferie
+      state: 'off'
+  action:
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.samsung
+        temperature: 20
+
+- alias: 'AC - Boost the heat a bit'
+  trigger:
+    - platform: time
+      at: '04:00:00'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_boolean.ferie
+        state: 'off'
+      - condition: numeric_state
+        entity_id: sensor.netatmo_inne_temperature
+        below: 21.5
+  action:
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.samsung
+        temperature: 21
+    - service: climate.set_fan_mode
+      data:
+        entity_id: climate.samsung
+        fan_mode: auto
+    - service: climate.set_swing_mode
+      data:
+        entity_id: climate.samsung
+        swing_mode: rangeFull
+
+- alias: 'AC - Reduse fan speed'
+  trigger:
+    - platform: time
+      at: '06:00:00'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_boolean.ferie
+        state: 'off'
+      - condition: numeric_state
+        entity_id: sensor.netatmo_inne_temperature
+        below: 21.5
+  action:
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.samsung
+        temperature: 22
+    - service: climate.set_fan_mode
+      data:
+        entity_id: climate.samsung
+        fan_mode: quiet
+    - service: climate.set_swing_mode
+      data:
+        entity_id: climate.samsung
+        swing_mode: stopped
+
+
+- alias: 'AC - Set Away Mode'
+  trigger:
+    platform: template
+    value_template: "{{ states('sensor.time_date') == states('sensor.away') }}"
+  action:
+    - service: climate.set_temperature
+      data:
+       entity_id: climate.samsung
+       temperature: 15
+    - service: climate.set_fan_mode
+      data:
+        entity_id: climate.samsung
+        fan_mode: quiet
+    - service: climate.set_swing_mode
+      data:
+        entity_id: climate.samsung
+        swing_mode: stopped
+    - service: input_boolean.turn_on
+      data:
+        entity_id: input_boolean.ferie
+    - service: media_player.volume_set
+      data_template:
+        entity_id: media_player.alle
+        volume_level: 0.3
+    -  service: tts.google_say
+       entity_id: media_player.alle
+       data:
+         message: 'God tur! Jeg setter ned varmen litt her hjemme, men skrur den opp igjen til dere kommer hjem'
+    - service: notify.ios_oleandre
+      data:
+        message: "Slår av varmen"
+
+- alias: 'AC - Set Home Mode'
+  trigger:
+    platform: template
+    value_template: "{{ states('sensor.time_date') == states('sensor.home') }}"
+  action:
+    - service: climate.set_temperature
+      data:
+       entity_id: climate.samsung
+       temperature: 22
+    - service: climate.set_fan_mode
+      data:
+        entity_id: climate.samsung
+        fan_mode: auto
+    - service: climate.set_swing_mode
+      data:
+        entity_id: climate.samsung
+        swing_mode: rangeFull
+    - service: input_boolean.turn_off
+      data:
+        entity_id: input_boolean.ferie
+    - service: notify.ios_oleandre
+      data:
+        message: "Varmer opp hjemme"
+
+# Automation for short time cooling
+- alias: 'AC - Start cooling'
+  trigger:
+    - platform: state
+      entity_id: input_boolean.cooling
+      to: 'on'
+  action:
+    - service: climate.turn_on
+      entity_id: climate.samsung
+    - service: climate.set_operation_mode
+      data:
+        entity_id: climate.samsung
+        operation_mode: cool
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.samsung
+        temperature: 21
+    - service: climate.set_fan_mode
+      data:
+        entity_id: climate.samsung
+        fan_mode: auto
+    - service: climate.set_swing_mode
+      data:
+        entity_id: climate.samsung
+        swing_mode: rangeFull
+
+- alias: 'AC - Turn of cooling after X min'
+  trigger:
+    - platform: state
+      entity_id: input_boolean.cooling
+      from: 'off'
+      to: 'on'
+      for:
+        hours: 0
+        minutes: 30
+        seconds: 0
+  action:
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.cooling
+
+- alias: 'AC - Stopp cooling'
+  trigger:
+    - platform: state
+      entity_id: input_boolean.cooling
+      to: 'off'
+  action:
+    - service: climate.turn_off
+      entity_id: climate.samsung
+
+
+# Heat control at the cabin
+- alias: 'Cabin - Turn on the heat'
+  trigger:
+    - platform: state
+      entity_id: input_boolean.varme
+      to: 'on'
+  action:
+    - service: climate.turn_on
+      entity_id: climate.soverom
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.soverom
+        temperature: 19
+
+- alias: 'Cabin - Turn off the heat'
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.netatmo_loft_temperature
+      above: 21.5
+  action:
+    - service: climate.turn_off
+      entity_id: climate.soverom
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.soverom
+        temperature: 5
+
+#Lock / Unlock Front door
+- alias: 'Lock - Unlock frontdoor when comming home'
+  trigger:
+    - platform: zone
+      event: enter
+      zone: zone.home
+      entity_id: person.christina
+    - platform: zone
+      event: enter
+      zone: zone.home
+      entity_id: person.ole_andre
+  condition:
+    - condition: state
+      entity_id: lock.poly_control_danalock_v3_btze_locked
+      state: 'locked'
+  action:
+    - service: notify.all
+      data:
+        message: "Låser opp døren, noen er nesten hjemme"
+    - service: lock.unlock
+      entity_id: lock.poly_control_danalock_v3_btze_locked
+
+- alias: 'Lock - Lock frontdoor when leaving home'
+  trigger:
+    - platform: zone
+      event: leave
+      zone: zone.home
+      entity_id: person.christina
+    - platform: zone
+      event: leave
+      zone: zone.home
+      entity_id: person.ole_andre
+  condition:
+    condition: and
+    conditions:
+    - condition: state
+      entity_id: input_boolean.autolock
+      state: 'on'
+    - condition: state
+      entity_id: lock.poly_control_danalock_v3_btze_locked
+      state: 'unlocked'
+  action:
+    - service: notify.all
+      data:
+        message: "Låser døren, noen reiser hjemmefra"
+    - service: lock.lock
+      entity_id: lock.poly_control_danalock_v3_btze_locked
+
+- alias: 'Lock - Lock Front Door After 15 min'
+  trigger:
+    - platform: state
+      entity_id: lock.poly_control_danalock_v3_btze_locked
+      from: 'locked'
+      to: 'unlocked'
+      for:
+        hours: 0
+        minutes: 15
+        seconds: 0
+  condition:
+    condition: and
+    conditions:
+    - condition: state
+      entity_id: input_boolean.autolock
+      state: 'on'
+    - condition: state
+      entity_id: lock.poly_control_danalock_v3_btze_locked
+      state: 'unlocked'
+  action:
+    - service: lock.lock
+      entity_id: lock.poly_control_danalock_v3_btze_locked
+
+- alias: 'Lock - Disable autolock and unlock door'
+  trigger:
+    - platform: state
+      entity_id: input_boolean.autolock
+      to: 'off'
+  action:
+    service: lock.unlock
+    entity_id: lock.poly_control_danalock_v3_btze_locked
+
+- alias: 'Lock - Enable autolock and lock door'
+  trigger:
+    - platform: state
+      entity_id: input_boolean.autolock
+      to: 'on'
+  action:
+    service: lock.lock
+    entity_id: lock.poly_control_danalock_v3_btze_locked
+
+- alias: 'Lock - Lock doors for the night and enable autolock'
+  trigger:
+    - platform: time
+      at: '22:00:00'
+  action:
+    - service: lock.lock
+      entity_id: lock.poly_control_danalock_v3_btze_locked
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.autolock
+
+
+#Misc
+- alias: 'Restart HA'
+  trigger:
+    platform: time
+    at: "02:00:00"
+  action:
+    - service: homeassistant.restart
+
+#Notifications misc
+- alias: 'Garbage Collection - Tomorrow'
+  trigger:
+  - at: '21:00:00'
+    platform: time
+  condition:
+  - condition: state
+    entity_id: sensor.collect_next_date
+    state: '1'
+  action:
+    - service: notify.all
+      data:
+        message: "Søppeltømming i morgen: {{ states('sensor.collect_next_type') }}"
+    - service: media_player.volume_set
+      data_template:
+        entity_id: media_player.alle
+        volume_level: 0.4
+    -  service: tts.google_say
+       entity_id: media_player.alle
+       data:
+         message: 'Har dere husket å trille ut søppeldunkene?'
+
+- alias: 'Garbage Collection - Today'
+  trigger:
+  - at: '06:15:00'
+    platform: time
+  condition:
+  - condition: state
+    entity_id: sensor.collect_next_date
+    state: '0'
+  action:
+    - service: notify.all
+      data:
+        message: "Søppeltømming i dag: {{ states('sensor.collect_next_type') }}"
+
+- alias: 'Ole leave work'
+  trigger:
+    platform: zone
+    event: leave
+    zone: zone.jobb
+    entity_id: device_tracker.oleandre
+  action:
+    - service: notify.ios_christina
+      data:
+        message: "Ole Andre er nok på vei hjem. Hjemme {{ states('sensor.oleandre_time_of_arrival') }}"
+    - service: media_player.volume_set
+      data_template:
+        entity_id: media_player.alle
+        volume_level: 0.4
+    -  service: tts.google_say
+       entity_id: media_player.alle
+       data:
+         message: 'Ole Andre har reist fra jobb, jeg tror nok han er på vei hjem'
+
+- alias: 'Christina leave work'
+  trigger:
+    - platform: zone
+      event: leave
+      zone: zone.jobb_kf
+      entity_id: device_tracker.christina
+    - platform: zone
+      event: leave
+      zone: zone.jobb_fagerdalen
+      entity_id: device_tracker.christina
+  action:
+    - service: notify.ios_oleandre
+      data:
+        message: "Christina er nok på vei hjem. Hjemme {{ states('sensor.christina_time_of_arrival') }}"
+    - service: media_player.volume_set
+      data_template:
+        entity_id: media_player.alle
+        volume_level: 0.4
+    -  service: tts.google_say
+       entity_id: media_player.alle
+       data:
+         message: 'Christina har reist fra jobb, jeg tror nok hun er på vei hjem'
+
+#nissan_leaf
+- alias: Stop AC in car after 15min.
+  trigger:
+    - platform: state
+      entity_id: switch.leaf1olea_climate_control
+      from: 'off'
+      to: 'on'
+      for:
+        hours: 0
+        minutes: 15
+        seconds: 0
+  condition:
+    - condition: state
+      entity_id: switch.leaf1olea_climate_control
+      state: 'off'
+  action:
+    - service: switch.turn_off
+      entity_id: switch.leaf1olea_climate_control
+
+- alias: Update status leaf
+  trigger:
+    - platform: state
+      entity_id: switch.leaf1olea_climate_control
+      from: 'off'
+      to: 'on'
+      for:
+        hours: 0
+        minutes: 20
+        seconds: 0
+  condition:
+    - condition: state
+      entity_id: switch.leaf1olea_climate_control
+      state: 'off'
+  action:
+    - service: nissan_leaf.update
+      data:
+        vin: !secret nissanvin
+
+- alias: 'Check battery on leaf'
+  trigger:
+    - platform: time
+      at: '21:00:00'
+  condition:
+    condition: and
+    conditions:
+    - condition: template
+      value_template: '{{ states.sensor.leaf1olea_charge.state < 60 }}'
+    - condition: state
+      entity_id: binary_sensor.leaf1olea_plug_status
+      state: 'off'
+    - condition: state
+      entity_id: binary_sensor.workday_sensor
+      state: 'on'
+  action:
+    - service: notify.ios_oleandre
+      data:
+        message: "Husk å lade bilen"
