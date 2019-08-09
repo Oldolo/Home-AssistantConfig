@@ -15,6 +15,8 @@ resources:
     type: module
   - url: /community_plugin/button-card/button-card.js
     type: module
+  - url: /community_plugin/atomic_calendar/atomic_calendar.js
+    type: module
 
 
 
@@ -328,6 +330,20 @@ views:
   - icon: mdi:run
     title: Brukere
     cards:
+
+      - type: "custom:atomic-calendar"
+        CalEventIcon2Filter: D6,D9,D10,D11,D12,D13
+        CalEventIcon3Filter: A6,A8,A10
+        CalEventIcon2: mdi:weather-sunny
+        CalEventIcon3: mdi:weather-night
+        enableModeChange: true
+        defaultMode: 1
+        maxDaysToShow: 10
+        entities:
+          - entity: calendar.turnus_christina
+            type: icon2,icon3
+          - entity: calendar.oleandre
+            type: icon1
 
       - type: glance
         entities:

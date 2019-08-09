@@ -25,8 +25,11 @@ The setup is running a Raspberry Pi 3 Model B.
 *  Pi-Hole
 *  Google Calendar
    *  Garbage Collection
+   *  Working Schedule
 *  Met.no
 *  Waze Travel time
+*  Nabu Casa
+*  Spotify
 
 ### Automations
 

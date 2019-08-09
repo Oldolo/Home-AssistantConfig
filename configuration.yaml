@@ -35,6 +35,11 @@ zone:
     radius: 300
     icon: mdi:snowflake
 
+google:
+  client_id: !secret google_ID
+  client_secret: !secret google_secretID
+  track_new_calendar: false
+
 hacs:
   token: !secret hacs_token
 
