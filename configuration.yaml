@@ -113,8 +113,13 @@ person:
       - device_tracker.hostname1
 
 recorder:
-  purge_keep_days: 3
+  purge_keep_days: 1
   purge_interval: 1
+  exclude:
+    entities:
+     - sensor.time_date
+     - sensor.christina_time_of_arrival
+     - sensor.oleandre_time_of_arrival
 
 
 notify:
@@ -287,31 +292,31 @@ sensor:
         friendly_name: "Neste Tømmedag"
         value_template: '{{ (as_timestamp(states.sensor.soppel_event_0.attributes.start) | timestamp_custom("%j") | int) - (as_timestamp(now()) | timestamp_custom("%-j") | int) }}'
         icon_template: >
-          {% if 'Sort' in states.sensor.soppel_event_0.attributes.name %}
-            mdi:trash-can
-          {% elif 'Metal' in states.sensor.soppel_event_0.attributes.name %}
+          {% if 'Metal' in states.sensor.soppel_event_0.attributes.name %}
             mdi:spray
-          {% else %}
+          {% elif 'Gronn' in states.sensor.soppel_event_0.attributes.name %}
             mdi:recycle
+          {% else %}
+            mdi:trash-can
           {% endif %}
 
       collect_next_type:
         friendly_name: "Neste Tømmetype"
         value_template: >
-          {% if 'Sort' in states.sensor.soppel_event_0.attributes.name %}
-            Restavfall
-          {% elif 'Metal' in states.sensor.soppel_event_0.attributes.name %}
+          {% if 'Metal' in states.sensor.soppel_event_0.attributes.name %}
             Restavfall, Glass og Metal
+          {% elif 'Gronn' in states.sensor.soppel_event_0.attributes.name %}
+            Restavfall, papir
           {% else %}
-            Restavfall, Papir
+            Restavfall
           {% endif %}
         icon_template: >
-          {% if 'Sort' in states.sensor.soppel_event_0.attributes.name %}
-            mdi:trash-can
-          {% elif 'Metal' in states.sensor.soppel_event_0.attributes.name %}
+          {% if 'Metal' in states.sensor.soppel_event_0.attributes.name %}
             mdi:spray
-          {% else %}
+          {% elif 'Gronn' in states.sensor.soppel_event_0.attributes.name %}
             mdi:recycle
+          {% else %}
+            mdi:trash-can
           {% endif %}
 
       samsung_temp:

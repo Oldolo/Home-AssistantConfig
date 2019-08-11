@@ -261,6 +261,7 @@ views:
 
       - type: custom:weather-card
         entity: weather.home
+        details: false
 
       - type: picture-entity
         title: Yr
@@ -332,18 +333,20 @@ views:
     cards:
 
       - type: "custom:atomic-calendar"
-        CalEventIcon2Filter: D6,D9,D10,D11,D12,D13
+        CalEventIcon2Filter: D6,D8,D9,D10,D11,D12,D13
         CalEventIcon3Filter: A6,A8,A10
+        CalEventIcon1: mdi:home
         CalEventIcon2: mdi:weather-sunny
         CalEventIcon3: mdi:weather-night
         enableModeChange: true
         defaultMode: 1
-        maxDaysToShow: 10
+        maxDaysToShow: 14
         entities:
           - entity: calendar.turnus_christina
             type: icon2,icon3
           - entity: calendar.oleandre
             type: icon1
+
 
       - type: glance
         entities:
@@ -364,6 +367,7 @@ views:
 
       - type: custom:weather-card
         entity: weather.hytta
+        details: false
 
       - type: picture-entity
         title: Yr

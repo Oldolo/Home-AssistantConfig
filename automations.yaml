@@ -182,7 +182,7 @@
   action:
     - service: climate.turn_on
       entity_id: climate.samsung
-    - service: climate.set_operation_mode
+    - service: climate.set_hvac_mode
       data:
         entity_id: climate.samsung
         operation_mode: cool
@@ -422,6 +422,15 @@
       event: leave
       zone: zone.jobb_fagerdalen
       entity_id: device_tracker.christina
+  condition:
+     condition: or
+     conditions:
+       - condition: time
+         after: '14:00:00'
+         before: '15:30:00'
+       - condition: time
+         after: '21:00:00'
+         before: '22:30:00'
   action:
     - service: notify.ios_oleandre
       data:
