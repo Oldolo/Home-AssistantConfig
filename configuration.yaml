@@ -43,6 +43,8 @@ google:
 hacs:
   token: !secret hacs_token
 
+breaking_changes:
+
 # Show links to resources in log and frontend
 #introduction:
 
@@ -94,8 +96,8 @@ device_tracker:
   - platform: iphonedetect
     consider_home: 30
     hosts:
-      hostname1: 10.0.0.73
-      hostname2: 10.0.0.125
+      christina_wifi: 10.0.0.73
+      oleandre_wifi: 10.0.0.125
 
 #Person
 person:
@@ -104,13 +106,13 @@ person:
     user_id: 8d2c1c59d51f4e97bee478a7801e2b9d
     device_trackers:
       - device_tracker.oleandre
-      - device_tracker.hostname2
+      - device_tracker.oleandre_wifi
   - name: Christina
     id: 008
     user_id: 3a0c8cfb0d104f0facf394fb9030c6d7
     device_trackers:
       - device_tracker.christina
-      - device_tracker.hostname1
+      - device_tracker.christina_wifi
 
 recorder:
   purge_keep_days: 1
@@ -328,35 +330,23 @@ sensor:
         unit_of_measurement: '°C'
 
       powerprice:
-        value_template: '{{ states.sensor.electricity_price_dvergsnesstien_7.state | round(2)}}'
+        value_template: '{{ states.sensor.electricity_price.state | round(2)}}'
         unit_of_measurement: 'NOK'
 
       accumulatedcost:
-        value_template: '{{ states.sensor.real_time_consumption_dvergsnesstien_7.attributes.accumulatedCost | round(2)}}'
+        value_template: '{{ states.sensor.real_time_consumption.attributes.accumulatedCost | round(2)}}'
         unit_of_measurement: 'NOK'
 
       accumulatedconsumption:
-        value_template: '{{ states.sensor.real_time_consumption_dvergsnesstien_7.attributes.accumulatedConsumption | round(2)}}'
+        value_template: '{{ states.sensor.real_time_consumption.attributes.accumulatedConsumption | round(2)}}'
         unit_of_measurement: 'KWh'
 
       averagepower:
-        value_template: '{{ states.sensor.real_time_consumption_dvergsnesstien_7.attributes.averagePower }}'
+        value_template: '{{ states.sensor.real_time_consumption.attributes.averagePower }}'
         unit_of_measurement: 'W'
 
-      currentphase1:
-        value_template: '{{ states.sensor.real_time_consumption_dvergsnesstien_7.attributes.currentPhase1 }}'
-        unit_of_measurement: 'Amp'
-
-      currentphase2:
-        value_template: '{{ states.sensor.real_time_consumption_dvergsnesstien_7.attributes.currentPhase2 }}'
-        unit_of_measurement: 'Amp'
-
-      currentphase3:
-        value_template: '{{ states.sensor.real_time_consumption_dvergsnesstien_7.attributes.currentPhase3 }}'
-        unit_of_measurement: 'Amp'
-
       price_level:
-        value_template: '{{ states.sensor.electricity_price_dvergsnesstien_7.attributes.price_level }}'
+        value_template: '{{ states.sensor.electricity_price.attributes.price_level }}'
 
       away:
         value_template: '{{ (states.input_datetime.away.attributes.timestamp | int | timestamp_custom("%H:%M, %Y-%m-%d")) }}'

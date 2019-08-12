@@ -5,8 +5,6 @@ resources:
     type: module
   - url: /community_plugin/lovelace-slider-entity-row/slider-entity-row.js
     type: module
-  - url: /community_plugin/secondaryinfo-entity-row/secondaryinfo-entity-row.js
-    type: js
   - url: /local/card-tools.js
     type: js
   - url: /community_plugin/mini-graph-card/mini-graph-card.js
@@ -304,7 +302,7 @@ views:
 
       - type: entities
         entities:
-          - entity: sensor.real_time_consumption_dvergsnesstien_7
+          - entity: sensor.real_time_consumption
             name: Forbruk
           - entity: sensor.averagepower
             icon: mdi:power-plug
@@ -312,21 +310,16 @@ views:
           - entity: sensor.accumulatedconsumption
             icon: mdi:power-plug
             name: Forbruk i dag
+          - entity: sensor.price_level
+            icon: mdi:cash-multiple
+            name: Pris nivå
           - entity: sensor.powerprice
             icon: mdi:cash-multiple
             name: Pris
           - entity: sensor.accumulatedcost
             icon: mdi:cash-multiple
             name: Pris i dag
-          - entity: sensor.currentphase1
-            icon: mdi:power-plug
-            name: Fase 1
-          - entity: sensor.currentphase2
-            icon: mdi:power-plug
-            name: Fase 2
-          - entity: sensor.currentphase3
-            icon: mdi:power-plug
-            name: Fase 3
+
 
   - icon: mdi:run
     title: Brukere
@@ -345,6 +338,8 @@ views:
           - entity: calendar.turnus_christina
             type: icon2,icon3
           - entity: calendar.oleandre
+            type: icon1
+          - entity: calendar.christina
             type: icon1
 
 
