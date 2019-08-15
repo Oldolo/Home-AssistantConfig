@@ -286,6 +286,7 @@ views:
       - type: glance
         entities:
           - entity: sensor.collect_next_date
+          - entity: sensor.tomming_bokashi
 
 
       - type: custom:mini-graph-card

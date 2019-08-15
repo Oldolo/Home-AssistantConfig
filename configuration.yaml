@@ -190,6 +190,9 @@ input_datetime:
     name: Hjemme
     has_date: true
     has_time: true
+  bokashi:
+    name: Bokashi
+    has_date: true
 
 input_boolean:
   ferie:
@@ -256,6 +259,7 @@ sensor:
   - platform: time_date
     display_options:
       - 'time_date'
+      - 'date'
 
   - platform: fitbit
     clock_format: 24H
@@ -290,8 +294,15 @@ sensor:
   - platform: template
     sensors:
 
+      tomming_bokashi:
+        friendly_name: "Tømme Bokashi"
+        icon_template: mdi:food-apple
+        entity_id: sensor.date
+        value_template: '{{ (((states.input_datetime.bokashi.attributes.timestamp)-as_timestamp(now())) | int /60/1440) | round(0) }}'
+
       collect_next_date:
         friendly_name: "Neste Tømmedag"
+        entity_id: sensor.date
         value_template: '{{ (as_timestamp(states.sensor.soppel_event_0.attributes.start) | timestamp_custom("%j") | int) - (as_timestamp(now()) | timestamp_custom("%-j") | int) }}'
         icon_template: >
           {% if 'Metal' in states.sensor.soppel_event_0.attributes.name %}
@@ -304,6 +315,7 @@ sensor:
 
       collect_next_type:
         friendly_name: "Neste Tømmetype"
+        entity_id: sensor.date
         value_template: >
           {% if 'Metal' in states.sensor.soppel_event_0.attributes.name %}
             Restavfall, Glass og Metal
