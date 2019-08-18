@@ -381,3 +381,26 @@ views:
       - type: entities
         entities:
           - input_boolean.varme
+
+  - icon: mdi:memory
+    title: System Monitor
+    cards:
+
+
+      - type: glance
+        entities:
+          - entity: sensor.processor_use
+            name: Processor
+          - entity: sensor.memory_use_percent
+            name: Minne
+          - entity: sensor.disk_use_percent
+            name: Diskplass
+
+      - type: entities
+        entities:
+          - entity: sensor.hacs
+            name: HACS Oppdateringer
+          - entity: sensor.potential_breaking_changes
+            name: Breaking Changes
+          - entity: sensor.snapshot_backup
+            name: Backup

@@ -91,7 +91,6 @@ sun:
 # Health data
 system_health:
 
-
 device_tracker:
   - platform: iphonedetect
     consider_home: 30
@@ -237,6 +236,13 @@ tibber:
   access_token: !secret tibber_key
 
 sensor:
+
+  - platform: systemmonitor
+    resources:
+      - type: memory_use_percent
+      - type: processor_use
+      - type: disk_use_percent
+        arg: /
 
   - platform: spotcast
 
