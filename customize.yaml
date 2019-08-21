@@ -1,7 +1,7 @@
-sensor.collect_next_date:
-  templates:
-    state: >
-      if (state == 0) return 'I dag'; else if (state == 1) return 'I morgen';
-      else if (state < 7) return (new Date(new Date().setDate(new Date().getDate()
-      + Number(state))).toLocaleDateString('en-us', {weekday: 'short'})); else
-      return state + ' Days';
+#sensor.collect_next_date:
+#  templates:
+#    state: >
+#      if (state == 0) return 'I dag'; else if (state == 1) return 'I morgen';
+#      else if (state < 7) return (new Date(new Date().setDate(new Date().getDate()
+#      + Number(state))).toLocaleDateString('en-us', {weekday: 'short'})); else
+#      return state + ' Days';

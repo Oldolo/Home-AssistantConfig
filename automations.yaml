@@ -393,6 +393,19 @@
       data:
         message: "Søppeltømming i dag: {{ states('sensor.collect_next_type') }}"
 
+- alias: 'Bokashi - Today'
+  trigger:
+  - at: '17:30:00'
+    platform: time
+  condition:
+  - condition: state
+    entity_id: sensor.tomming_bokashi
+    state: '0'
+  action:
+    - service: notify.all
+      data:
+        message: "Bokashi kan nå tømmes :)"
+
 - alias: 'Ole leave work'
   trigger:
     platform: zone
@@ -444,8 +457,63 @@
        data:
          message: 'Christina har reist fra jobb, jeg tror nok hun er på vei hjem'
 
+- alias: 'Car - Price Level Change when charging car'
+  trigger:
+    - platform: state
+      entity_id: sensor.price_level
+      to: 'EXPENSIVE'
+    - platform: state
+      entity_id: sensor.price_level
+      to: 'VERY_EXPENSIVE'
+  condition:
+       - condition: state
+         entity_id: switch.upsen_charging
+         state: 'on'
+  action:
+    - service: notify.all
+      data:
+        message: "Ville bare si at det er dyrt å lade bilen nå :)"
+
+- alias: 'Car - Car start charging with high price level'
+  trigger:
+    - platform: state
+      entity_id: switch.upsen_charging
+      to: 'on'
+  condition:
+     condition: or
+     conditions:
+       - condition: state
+         entity_id: sensor.price_level
+         state: 'EXPENSIVE'
+       - condition: state
+         entity_id: sensor.price_level
+         state: 'VERY_EXPENSIVE'
+  action:
+    - service: notify.all
+      data:
+        message: "Ville bare si at det er dyrt å lade bilen nå :)"
+
+- alias: 'Car - Start heating on upsen'
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.next_turnusstart
+      below: 30
+  condition:
+     condition: and
+     conditions:
+       - condition: numeric_state
+         entity_id: sensor.netatmo_ute_temperature
+         below: 12
+       - condition: state
+         entity_id: input_boolean.upsen_autoheat
+         state: 'on'
+  action:
+    - service: notify.all
+      data:
+        message: "Varmer Upsen"
+
 #nissan_leaf
-- alias: Stop AC in car after 15min.
+- alias: 'Car - Stop AC in car after 15min'
   trigger:
     - platform: state
       entity_id: switch.leaf1olea_climate_control
@@ -482,7 +550,7 @@
       data:
         vin: !secret nissanvin
 
-- alias: 'Check battery on leaf'
+- alias: 'Car - Check battery on leaf'
   trigger:
     - platform: time
       at: '21:00:00'

@@ -114,14 +114,7 @@ person:
       - device_tracker.christina_wifi
 
 recorder:
-  purge_keep_days: 1
-  purge_interval: 1
-  exclude:
-    entities:
-     - sensor.time_date
-     - sensor.christina_time_of_arrival
-     - sensor.oleandre_time_of_arrival
-
+  purge_keep_days: 3
 
 notify:
   - name: all
@@ -129,14 +122,6 @@ notify:
     services:
       - service: ios_oleandre
       - service: ios_christina
-
-volkswagencarnet:
-    username: !secret email
-    password: !secret volkswagencarnet
-    scan_interval:
-        minutes: 5
-    name:
-        wvwzzzaazfd902956: "Upsen"
 
 binary_sensor:
   - platform: workday
@@ -174,10 +159,18 @@ spotcast:
   username: !secret spotify_username
   password: !secret spotify_password
 
-nissan_leaf:
-  username: !secret email
-  password: !secret nissanpassword
-  region: "NE"
+volkswagencarnet:
+    username: !secret email
+    password: !secret volkswagencarnet
+    scan_interval:
+        minutes: 5
+    name:
+        wvwzzzaazfd902956: "Upsen"
+
+#nissan_leaf:
+#  username: !secret email
+#  password: !secret nissanpassword
+#  region: "NE"
 
 # Sensors
 input_datetime:
@@ -209,10 +202,15 @@ input_boolean:
     name: Kjøling
     icon: mdi:air-conditioner
     initial: off
+  leaf_autoheat:
+    name: Varme Leafen
+    icon: mdi:radiator
+  upsen_autoheat:
+    name: Varme Upsen
+    icon: mdi:radiator
 
 
 http:
-  api_password: !secret http_password
   base_url: !secret base_url
   ssl_certificate: /ssl/fullchain.pem
   ssl_key: /ssl/privkey.pem
@@ -236,6 +234,11 @@ tibber:
   access_token: !secret tibber_key
 
 sensor:
+
+  - platform: entur_public_transport
+    name: Rutetider
+    stop_ids:
+      - 'NSR:Quay:44329'
 
   - platform: systemmonitor
     resources:
@@ -343,10 +346,6 @@ sensor:
         value_template: '{{ states.climate.samsung.attributes.current_temperature}}'
         unit_of_measurement: '°C'
 
-      samsung_settemp:
-        value_template: '{{ states.climate.samsung.attributes.temperature}}'
-        unit_of_measurement: '°C'
-
       powerprice:
         value_template: '{{ states.sensor.electricity_price.state | round(2)}}'
         unit_of_measurement: 'NOK'
@@ -423,6 +422,10 @@ sensor:
        value_template: >
         {% set minutes = states('sensor.christina_hjemme') | int %}
         {{ (as_timestamp(now()) + (minutes * 60)) | timestamp_custom('%H:%M') }}
+
+      next_turnusstart:
+        value_template: '{{ (as_timestamp(states.calendar.christina.attributes.start_time) | timestamp_custom("%j%H%M") | int) - (as_timestamp(now()) | timestamp_custom("%j%H%M") | int) }}'
+        entity_id: sensor.time_date
 
 # Text to speech
 tts:

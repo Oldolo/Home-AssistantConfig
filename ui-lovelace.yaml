@@ -5,16 +5,14 @@ resources:
     type: module
   - url: /community_plugin/lovelace-slider-entity-row/slider-entity-row.js
     type: module
-  - url: /local/card-tools.js
-    type: js
   - url: /community_plugin/mini-graph-card/mini-graph-card.js
     type: module
   - url: /community_plugin/mini-media-player/mini-media-player.js
     type: module
-  - url: /community_plugin/button-card/button-card.js
-    type: module
   - url: /community_plugin/atomic_calendar/atomic_calendar.js
     type: module
+  - url: /community_plugin/entur-card/entur-card.js
+    type: js
 
 
 
@@ -116,6 +114,8 @@ views:
             service: nissan_leaf.update
             service_data:
               vin: !secret nissanvin
+          - entity: input_boolean.leaf_autoheat
+            name: Automatisk varme
 
       - type: entities
         entities:
@@ -135,6 +135,8 @@ views:
             name: Rear Window
           - entity: lock.upsen_door_locked
             name: Lås
+          - entity: input_boolean.upsen_autoheat
+            name: Automatisk varme
 
   - icon: mdi:music
     title: Musikk
@@ -288,18 +290,58 @@ views:
           - entity: sensor.collect_next_date
           - entity: sensor.tomming_bokashi
 
-
-      - type: custom:mini-graph-card
-        icon: mdi:home-thermometer
-        labels: true
-        points_per_hour: 2
+      - type: custom:entur-card
+        name: Rutetider
+        show_next: true
+        show_human: true
         entities:
-          - entity: sensor.samsung_temp
-            name: Kjøkken
-          - entity: sensor.netatmo_inne_temperature
-            name: Stue
-          - entity: sensor.samsung_settemp
-            name: Satt temp
+          - entity: sensor.rutetider_dvergsneskrysset_platform_44329
+            name: Dvergsneskrysset
+
+      - type: horizontal-stack
+        cards:
+          - type: custom:mini-graph-card
+            icon: mdi:home-thermometer
+            entities:
+              - entity: sensor.samsung_temp
+                name: Kjøkken
+                show_fill: false
+            color_thresholds:
+              - value: 19
+                color: "#4786de"
+              - value: 20
+                color: "#7e9ad7"
+              - value: 21
+                color: "#a5b0cf"
+              - value: 22
+                color: "#c6c6c6"
+              - value: 23
+                color: "#e6a18c"
+              - value: 24
+                color: "#f77753"
+              - value: 25
+                color: "#ff3f14"
+          - type: custom:mini-graph-card
+            icon: mdi:home-thermometer
+            entities:
+              - entity: sensor.netatmo_inne_temperature
+                name: Stue
+                show_fill: false
+            color_thresholds:
+              - value: 19
+                color: "#4786de"
+              - value: 20
+                color: "#7e9ad7"
+              - value: 21
+                color: "#a5b0cf"
+              - value: 22
+                color: "#c6c6c6"
+              - value: 23
+                color: "#e6a18c"
+              - value: 24
+                color: "#f77753"
+              - value: 25
+                color: "#ff3f14"
 
       - type: entities
         entities:
@@ -344,16 +386,44 @@ views:
             type: icon1
 
 
-      - type: glance
-        entities:
-          - entity: person.ole_andre
-            name: Ole Andre
-          - entity: person.christina
-            name: Christina
-          - entity: device_tracker.nissan_leaf_leaf1olea
-            name: Leaf
-          - entity: device_tracker.upsen
-            name: Upsen
+      - type: horizontal-stack
+        cards:
+          - type: vertical-stack
+            cards:
+              - type: glance
+                show_name: false
+                entities:
+                  - entity: person.ole_andre
+                    icon: mdi:human-male
+              - type: glance
+                show_name: false
+                show_icon: false
+                entities:
+                  - entity: sensor.oleandre_time_of_arrival
+          - type: vertical-stack
+            cards:
+              - type: glance
+                show_name: false
+                entities:
+                  - entity: person.christina
+                    icon: mdi:human-female
+              - type: glance
+                show_name: false
+                show_icon: false
+                entities:
+                  - entity: sensor.christina_time_of_arrival
+          - type: vertical-stack
+            cards:
+              - type: glance
+                show_name: false
+                entities:
+                  - entity: device_tracker.nissan_leaf_leaf1olea
+                    icon: mdi:car-hatchback
+              - type: glance
+                show_name: false
+                entities:
+                  - entity: device_tracker.upsen
+                    icon: mdi:car-sports
 
 
   - icon: mdi:snowflake
@@ -386,15 +456,23 @@ views:
     title: System Monitor
     cards:
 
-
-      - type: glance
-        entities:
-          - entity: sensor.processor_use
-            name: Processor
-          - entity: sensor.memory_use_percent
-            name: Minne
-          - entity: sensor.disk_use_percent
-            name: Diskplass
+      - type: horizontal-stack
+        cards:
+          - type: custom:mini-graph-card
+            points_per_hour: 12
+            entities:
+              - entity: sensor.processor_use
+                name: Processor
+          - type: custom:mini-graph-card
+            points_per_hour: 12
+            entities:
+              - entity: sensor.memory_use_percent
+                name: Minne
+          - type: custom:mini-graph-card
+            points_per_hour: 12
+            entities:
+              - entity: sensor.disk_use_percent
+                name: Diskplass
 
       - type: entities
         entities:
