@@ -114,7 +114,7 @@ views:
             service: nissan_leaf.update
             service_data:
               vin: !secret nissanvin
-          - entity: input_boolean.leaf_autoheat
+          - entity: automation.car_start_heating_on_leafen
             name: Automatisk varme
 
       - type: entities
@@ -135,7 +135,7 @@ views:
             name: Rear Window
           - entity: lock.upsen_door_locked
             name: Lås
-          - entity: input_boolean.upsen_autoheat
+          - entity: automation.car_start_heating_on_upsen
             name: Automatisk varme
 
   - icon: mdi:music

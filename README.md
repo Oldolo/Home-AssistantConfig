@@ -47,13 +47,16 @@ The setup is running a Raspberry Pi 3 Model B.
 *  [Mini Media Player](https://github.com/kalkih/mini-media-player)
 *  [Simple Thermostat](https://github.com/nervetattoo/simple-thermostat)
 *  [Weather Card](https://github.com/bramkragten/weather-card)
+*  [Entur Card](https://github.com/jonkristian/entur-card)
 
 
 ### Automations
 
 *  Heating and Cooling with AC
+*  Heating cars when cold in the morning
 *  Lock / Unlock frontdoor
 *  Notifications with TTS and Push
    *  Garbage Collection
    *  ETA after leaving work
    *  Charging car reminder
+   *  Charging in high price levels

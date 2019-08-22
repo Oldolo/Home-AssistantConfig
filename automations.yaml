@@ -440,10 +440,10 @@
      conditions:
        - condition: time
          after: '14:00:00'
-         before: '15:30:00'
+         before: '16:30:00'
        - condition: time
          after: '21:00:00'
-         before: '22:30:00'
+         before: '23:00:00'
   action:
     - service: notify.ios_oleandre
       data:
@@ -499,18 +499,37 @@
       entity_id: sensor.next_turnusstart
       below: 30
   condition:
+       - condition: numeric_state
+         entity_id: sensor.netatmo_ute_temperature
+         below: 12
+  action:
+    - service: notify.all
+      data:
+        message: "Varmer Upsen"
+    - service: switch.turn_on
+      entity_id: switch.upsen_climatisation
+    - service: switch.turn_on
+      entity_id: switch.upsen_window_heater
+
+- alias: 'Car - Start heating on leafen'
+  trigger:
+    - platform: time
+      at: '06:15:00'
+  condition:
      condition: and
      conditions:
        - condition: numeric_state
          entity_id: sensor.netatmo_ute_temperature
          below: 12
        - condition: state
-         entity_id: input_boolean.upsen_autoheat
+         entity_id: binary_sensor.workday_sensor_2
          state: 'on'
   action:
-    - service: notify.all
+    - service: notify.ios_oleandre
       data:
-        message: "Varmer Upsen"
+        message: "Varmer Leafen"
+    - service: switch.turn_on
+      entity_id: switch.leaf1olea_climate_control
 
 #nissan_leaf
 - alias: 'Car - Stop AC in car after 15min'

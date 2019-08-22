@@ -202,12 +202,6 @@ input_boolean:
     name: Kjøling
     icon: mdi:air-conditioner
     initial: off
-  leaf_autoheat:
-    name: Varme Leafen
-    icon: mdi:radiator
-  upsen_autoheat:
-    name: Varme Upsen
-    icon: mdi:radiator
 
 
 http:
@@ -424,7 +418,7 @@ sensor:
         {{ (as_timestamp(now()) + (minutes * 60)) | timestamp_custom('%H:%M') }}
 
       next_turnusstart:
-        value_template: '{{ (as_timestamp(states.calendar.christina.attributes.start_time) | timestamp_custom("%j%H%M") | int) - (as_timestamp(now()) | timestamp_custom("%j%H%M") | int) }}'
+        value_template: '{{ (as_timestamp(states.calendar.turnus_christina.attributes.start_time) | timestamp_custom("%j%H%M") | int) - (as_timestamp(now()) | timestamp_custom("%j%H%M") | int) }}'
         entity_id: sensor.time_date
 
 # Text to speech
