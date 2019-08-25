@@ -1,4 +1,4 @@
-# For Climate Control
+#AC - Heating and Vaction mode
 
 - alias: 'AC - Turn down the heat - Daytime'
   trigger:
@@ -353,16 +353,16 @@
 #Misc
 - alias: 'Restart HA'
   trigger:
-    platform: time
-    at: "02:00:00"
+  -  platform: time
+     at: "02:00:00"
   action:
     - service: homeassistant.restart
 
-#Notifications misc
-- alias: 'Garbage Collection - Tomorrow'
+#Notifications Push and TTS
+- alias: 'Notify - Garbage Collection - Tomorrow'
   trigger:
-  - at: '21:00:00'
-    platform: time
+  - platform: time
+    at: '21:00:00'
   condition:
   - condition: state
     entity_id: sensor.collect_next_date
@@ -380,10 +380,10 @@
        data:
          message: 'Har dere husket å trille ut søppeldunkene?'
 
-- alias: 'Garbage Collection - Today'
+- alias: 'Notify - Garbage Collection - Today'
   trigger:
-  - at: '06:15:00'
-    platform: time
+  - platform: time
+    at: '06:15:00'
   condition:
   - condition: state
     entity_id: sensor.collect_next_date
@@ -393,7 +393,16 @@
       data:
         message: "Søppeltømming i dag: {{ states('sensor.collect_next_type') }}"
 
-- alias: 'Bokashi - Today'
+- alias: 'Notify - News bhg'
+  trigger:
+    - platform: state
+      entity_id: sensor.bhg_alert
+  action:
+    - service: notify.all
+      data:
+        message: "Nytt fra bhg: {{ states('sensor.bhg_alert') }}"
+
+- alias: 'Notify - Bokashi - Today'
   trigger:
   - at: '17:30:00'
     platform: time
@@ -406,7 +415,7 @@
       data:
         message: "Bokashi kan nå tømmes :)"
 
-- alias: 'Ole leave work'
+- alias: 'Notify - Ole leave work'
   trigger:
     platform: zone
     event: leave
@@ -425,7 +434,7 @@
        data:
          message: 'Ole Andre har reist fra jobb, jeg tror nok han er på vei hjem'
 
-- alias: 'Christina leave work'
+- alias: 'Notify - Christina leave work'
   trigger:
     - platform: zone
       event: leave
@@ -457,6 +466,7 @@
        data:
          message: 'Christina har reist fra jobb, jeg tror nok hun er på vei hjem'
 
+# Car
 - alias: 'Car - Price Level Change when charging car'
   trigger:
     - platform: state
@@ -474,7 +484,7 @@
       data:
         message: "Ville bare si at det er dyrt å lade bilen nå :)"
 
-- alias: 'Car - Car start charging with high price level'
+- alias: 'Car - Start charging with high price level'
   trigger:
     - platform: state
       entity_id: switch.upsen_charging
@@ -531,7 +541,6 @@
     - service: switch.turn_on
       entity_id: switch.leaf1olea_climate_control
 
-#nissan_leaf
 - alias: 'Car - Stop AC in car after 15min'
   trigger:
     - platform: state
@@ -550,7 +559,7 @@
     - service: switch.turn_off
       entity_id: switch.leaf1olea_climate_control
 
-- alias: Update status leaf
+- alias: 'Car - Update status leaf'
   trigger:
     - platform: state
       entity_id: switch.leaf1olea_climate_control

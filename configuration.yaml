@@ -35,61 +35,24 @@ zone:
     radius: 300
     icon: mdi:snowflake
 
-google:
-  client_id: !secret google_ID
-  client_secret: !secret google_secretID
-  track_new_calendar: false
+recorder:
+  purge_keep_days: 3
 
-hacs:
-  token: !secret hacs_token
-
-breaking_changes:
-
-# Show links to resources in log and frontend
-#introduction:
-
-# Enables the frontend
-frontend:
-
-# Enables configuration UI
-config:
-
-# Uncomment this if you are using SSL/TLS, running in Docker container, etc.
-# http:
-#   base_url: example.duckdns.org:8123
-
-# Checks for available updates
-# Note: This component will send some information about your system to
-# the developers to assist with development of Home Assistant.
-# For more information, please see:
-# https://home-assistant.io/blog/2016/10/25/explaining-the-updater/
-updater:
-  # Optional, allows Home Assistant developers to focus on popular components.
-  # include_used_components: true
-
-# Discover some devices automatically
 discovery:
   ignore:
     - apple_tv
     - igd
 
-# Allows you to issue voice commands from the frontend in enabled browsers
 conversation:
-
-# Enables support for tracking state changes over time
 history:
-
-# View all events in a logbook
 logbook:
-
-# Enables a map showing the location of tracked devices
 map:
-
-# Track the sun
 sun:
-
-# Health data
 system_health:
+breaking_changes:
+frontend:
+config:
+updater:
 
 device_tracker:
   - platform: iphonedetect
@@ -98,7 +61,7 @@ device_tracker:
       christina_wifi: 10.0.0.73
       oleandre_wifi: 10.0.0.125
 
-#Person
+
 person:
   - name: Ole Andre
     id: 007
@@ -112,9 +75,6 @@ person:
     device_trackers:
       - device_tracker.christina
       - device_tracker.christina_wifi
-
-recorder:
-  purge_keep_days: 3
 
 notify:
   - name: all
@@ -159,6 +119,49 @@ spotcast:
   username: !secret spotify_username
   password: !secret spotify_password
 
+google:
+  client_id: !secret google_ID
+  client_secret: !secret google_secretID
+  track_new_calendar: false
+
+hacs:
+  token: !secret hacs_token
+
+http:
+  base_url: !secret base_url
+  ssl_certificate: /ssl/fullchain.pem
+  ssl_key: /ssl/privkey.pem
+
+climate:
+  - platform: sensibo
+    api_key: !secret sensibo_apikey
+
+  - platform: mill
+    username: !secret email
+    password: !secret millpassword
+
+netatmo:
+  api_key: !secret netatmo_apikey
+  secret_key: !secret netatmo_secretkey
+  username: !secret email
+  password: !secret netatmo_password
+  discovery: false
+
+tibber:
+  access_token: !secret tibber_key
+
+tts:
+  - platform: google_translate
+    service_name: google_say
+    language: 'no'
+
+media_player:
+  - platform: spotify
+    client_id: !secret spotify_key
+    client_secret: !secret spotify_secretkey
+
+
+
 volkswagencarnet:
     username: !secret email
     password: !secret volkswagencarnet
@@ -172,7 +175,7 @@ volkswagencarnet:
 #  password: !secret nissanpassword
 #  region: "NE"
 
-# Sensors
+# Custom Input
 input_datetime:
   away:
     name: Reiser
@@ -204,30 +207,13 @@ input_boolean:
     initial: off
 
 
-http:
-  base_url: !secret base_url
-  ssl_certificate: /ssl/fullchain.pem
-  ssl_key: /ssl/privkey.pem
-
-climate:
-  - platform: sensibo
-    api_key: !secret sensibo_apikey
-
-  - platform: mill
-    username: !secret email
-    password: !secret millpassword
-
-netatmo:
-  api_key: !secret netatmo_apikey
-  secret_key: !secret netatmo_secretkey
-  username: !secret email
-  password: !secret netatmo_password
-  discovery: false
-
-tibber:
-  access_token: !secret tibber_key
-
+#Sensor
 sensor:
+
+  - platform: scrape
+    resource: !secret url_bhg
+    name: bhg_alert
+    select: 'body > section > div > div > div > div > div.news-alert-link > a.listteaser'
 
   - platform: entur_public_transport
     name: Rutetider
@@ -294,6 +280,7 @@ sensor:
         - Utvendig
         - Loft
 
+# Templates
   - platform: template
     sensors:
 
@@ -421,18 +408,8 @@ sensor:
         value_template: '{{ (as_timestamp(states.calendar.turnus_christina.attributes.start_time) | timestamp_custom("%j%H%M") | int) - (as_timestamp(now()) | timestamp_custom("%j%H%M") | int) }}'
         entity_id: sensor.time_date
 
-# Text to speech
-tts:
-  - platform: google_translate
-    service_name: google_say
-    language: 'no'
 
-media_player:
-  - platform: spotify
-    client_id: !secret spotify_key
-    client_secret: !secret spotify_secretkey
-
-# Cloud
+# Include
 cloud: !include cloud.yaml
 group: !include groups.yaml
 automation: !include automations.yaml

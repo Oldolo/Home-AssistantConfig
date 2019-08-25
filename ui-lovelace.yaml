@@ -17,7 +17,6 @@ resources:
 
 
 views:
-    # View tab title.
   - icon: mdi:home-assistant
     title: Hjemme
     cards:
@@ -367,6 +366,11 @@ views:
   - icon: mdi:run
     title: Brukere
     cards:
+
+      - type: entities
+        entities:
+          - entity: sensor.bhg_alert
+            name: Siste nytt
 
       - type: "custom:atomic-calendar"
         CalEventIcon2Filter: D6,D8,D9,D10,D11,D12,D13
