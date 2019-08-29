@@ -67,10 +67,10 @@ The setup is running a Raspberry Pi 3 Model B.
    *  Charging in high price levels
 
 ### Screenshots
-<img src="https://github.com/Oldolo/Home-AssistantConfig/blob/master/screenshots/1.png" alt="HA Screenshots" />
-<img src="https://github.com/Oldolo/Home-AssistantConfig/blob/master/screenshots/2.png" alt="HA Screenshots" />
-<img src="https://github.com/Oldolo/Home-AssistantConfig/blob/master/screenshots/3.png" alt="HA Screenshots" />
-<img src="https://github.com/Oldolo/Home-AssistantConfig/blob/master/screenshots/4.png" alt="HA Screenshots" />
-<img src="https://github.com/Oldolo/Home-AssistantConfig/blob/master/screenshots/5.png" alt="HA Screenshots" />
-<img src="https://github.com/Oldolo/Home-AssistantConfig/blob/master/screenshots/6.png" alt="HA Screenshots" />
-<img src="https://github.com/Oldolo/Home-AssistantConfig/blob/master/screenshots/7.png" alt="HA Screenshots" />
+<img src="https://github.com/Oldolo/Home-AssistantConfig/blob/master/screenshots/1.PNG" alt="HA Screenshots" />
+<img src="https://github.com/Oldolo/Home-AssistantConfig/blob/master/screenshots/2.PNG" alt="HA Screenshots" />
+<img src="https://github.com/Oldolo/Home-AssistantConfig/blob/master/screenshots/3.PNG" alt="HA Screenshots" />
+<img src="https://github.com/Oldolo/Home-AssistantConfig/blob/master/screenshots/4.PNG" alt="HA Screenshots" />
+<img src="https://github.com/Oldolo/Home-AssistantConfig/blob/master/screenshots/5.PNG" alt="HA Screenshots" />
+<img src="https://github.com/Oldolo/Home-AssistantConfig/blob/master/screenshots/6.PNG" alt="HA Screenshots" />
+<img src="https://github.com/Oldolo/Home-AssistantConfig/blob/master/screenshots/7.PNG" alt="HA Screenshots" />
