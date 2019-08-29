@@ -7,7 +7,7 @@ The setup is running a Raspberry Pi 3 Model B.
 
 ### Hardware
 
-*  [Ikea Trådfri](https://www.ikea.com/no/no/p/tradfri-gateway-hvit-40337806/)
+*  ~~[Ikea Trådfri](https://www.ikea.com/no/no/p/tradfri-gateway-hvit-40337806/)~~
 *  [Google Home](https://store.google.com/product/google_home)
    *  [Google Home](https://store.google.com/product/google_home)
    *  [Google Mini](https://store.google.com/product/google_home_mini)
@@ -20,6 +20,8 @@ The setup is running a Raspberry Pi 3 Model B.
 *  [Tibber Pulse](https://norge.tibber.com/products/pulse/)
 *  [Netatmo Weather Station](https://www.netatmo.com/no-no/weather/weatherstation)
 *  [Fitbit Aria 2](https://www.fitbit.com/aria2)
+*  [Wyze Sense](https://www.wyze.com/wyze-sense/) Currently setting up and testing
+*  [ConBee](https://shop.dresden-elektronik.de/conbee-2.html) Currently setting up and testing
 *  Nissan Leaf 2.0
 *  Volkswagen e-UP
 
@@ -27,6 +29,8 @@ The setup is running a Raspberry Pi 3 Model B.
 ### Connected Services
 *  [Pi-Hole](https://github.com/hassio-addons/addon-pi-hole/tree/v3.0.2)
 *  [Google Cloud Backup](https://github.com/sabeechen/hassio-google-drive-backup)
+*  [deConz](https://github.com/home-assistant/hassio-addons/tree/master/deconz)
+*  [Duck DNS](https://www.duckdns.org/)
 *  [Google Calendar](https://www.home-assistant.io/components/calendar.google/)
    *  Garbage Collection
    *  Working Schedule
@@ -48,6 +52,7 @@ The setup is running a Raspberry Pi 3 Model B.
 *  [Simple Thermostat](https://github.com/nervetattoo/simple-thermostat)
 *  [Weather Card](https://github.com/bramkragten/weather-card)
 *  [Entur Card](https://github.com/jonkristian/entur-card)
+*  [Wyze Sense Component](https://github.com/kevinvincent/ha-wyzesense)
 
 
 ### Automations
@@ -60,3 +65,12 @@ The setup is running a Raspberry Pi 3 Model B.
    *  ETA after leaving work
    *  Charging car reminder
    *  Charging in high price levels
+
+### Screenshots
+<img src="https://github.com/Oldolo/Home-AssistantConfig/blob/master/screenshots/1.png" alt="HA Screenshots" />
+<img src="https://github.com/Oldolo/Home-AssistantConfig/blob/master/screenshots/2.png" alt="HA Screenshots" />
+<img src="https://github.com/Oldolo/Home-AssistantConfig/blob/master/screenshots/3.png" alt="HA Screenshots" />
+<img src="https://github.com/Oldolo/Home-AssistantConfig/blob/master/screenshots/4.png" alt="HA Screenshots" />
+<img src="https://github.com/Oldolo/Home-AssistantConfig/blob/master/screenshots/5.png" alt="HA Screenshots" />
+<img src="https://github.com/Oldolo/Home-AssistantConfig/blob/master/screenshots/6.png" alt="HA Screenshots" />
+<img src="https://github.com/Oldolo/Home-AssistantConfig/blob/master/screenshots/7.png" alt="HA Screenshots" />

@@ -1,6 +1,4 @@
 homeassistant:
-  unit_system: metric
-  time_zone: CET
   customize: !include customize.yaml
 
 zone:
@@ -43,16 +41,8 @@ discovery:
     - apple_tv
     - igd
 
-conversation:
-history:
-logbook:
-map:
-sun:
-system_health:
+default_config:
 breaking_changes:
-frontend:
-config:
-updater:
 
 device_tracker:
   - platform: iphonedetect
@@ -91,6 +81,9 @@ binary_sensor:
     country: "NO"
     workdays: [mon, tue, wed, thu]
     days_offset: 1
+
+  - platform: wyzesense
+    device: "/dev/hidraw1"
 
 switch:
   - platform: template
@@ -160,8 +153,6 @@ media_player:
     client_id: !secret spotify_key
     client_secret: !secret spotify_secretkey
 
-
-
 volkswagencarnet:
     username: !secret email
     password: !secret volkswagencarnet
@@ -170,10 +161,10 @@ volkswagencarnet:
     name:
         wvwzzzaazfd902956: "Upsen"
 
-#nissan_leaf:
-#  username: !secret email
-#  password: !secret nissanpassword
-#  region: "NE"
+nissan_leaf:
+  username: !secret email
+  password: !secret nissanpassword
+  region: "NE"
 
 # Custom Input
 input_datetime:
@@ -206,7 +197,6 @@ input_boolean:
     icon: mdi:air-conditioner
     initial: off
 
-
 #Sensor
 sensor:
 
@@ -226,6 +216,12 @@ sensor:
       - type: processor_use
       - type: disk_use_percent
         arg: /
+
+  - platform: command_line
+    name: CPU Temperature
+    command: "cat /sys/class/thermal/thermal_zone0/temp"
+    unit_of_measurement: "°C"
+    value_template: '{{ value | multiply(0.001) | round(1) }}'
 
   - platform: spotcast
 
@@ -256,17 +252,6 @@ sensor:
     monitored_resources:
       - "body/weight"
       - "devices/battery"
-
-
-  - platform: pi_hole
-    host: localhost:4865
-    ssl: true
-    verify_ssl: false
-    monitored_conditions:
-      - ads_blocked_today
-      - ads_percentage_today
-      - dns_queries_today
-      - domains_being_blocked
 
   - platform: netatmo
     station: Dvergsnesstien

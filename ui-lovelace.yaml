@@ -53,14 +53,14 @@ views:
             toggle: true
             hide_when_off: true
           - type: custom:slider-entity-row
-            entity: light.stue_hylle
+            entity: light.stue_bokhylle
             name: Hylle
             toggle: true
             hide_when_off: true
           - type: section
             label: Gjesterom
           - type: custom:slider-entity-row
-            entity: light.tak_gjesterom
+            entity: light.gjesterom_tak
             name: Tak
             toggle: true
             hide_when_off: true
@@ -79,7 +79,7 @@ views:
           - type: section
             label: Soverom
           - type: custom:slider-entity-row
-            entity: light.tak_soverom
+            entity: light.soverom_tak
             name: Tak
             toggle: true
             hide_when_off: true
@@ -421,11 +421,6 @@ views:
               - type: glance
                 show_name: false
                 entities:
-                  - entity: device_tracker.nissan_leaf_leaf1olea
-                    icon: mdi:car-hatchback
-              - type: glance
-                show_name: false
-                entities:
                   - entity: device_tracker.upsen
                     icon: mdi:car-sports
 
@@ -477,11 +472,18 @@ views:
             entities:
               - entity: sensor.disk_use_percent
                 name: Diskplass
+          - type: custom:mini-graph-card
+            points_per_hour: 12
+            entities:
+              - entity: sensor.cpu_temperature
+                name: Temp CPU
 
       - type: entities
         entities:
           - entity: sensor.hacs
             name: HACS Oppdateringer
+          - entity: binary_sensor.updater
+            name: HassIO Oppdatering
           - entity: sensor.potential_breaking_changes
             name: Breaking Changes
           - entity: sensor.snapshot_backup

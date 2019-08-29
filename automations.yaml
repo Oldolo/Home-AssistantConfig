@@ -402,6 +402,30 @@
       data:
         message: "Nytt fra bhg: {{ states('sensor.bhg_alert') }}"
 
+- alias: 'Notify - Doorbell'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.wyzesense_77871779
+      to: 'off'
+  action:
+    - service: notify.all
+      data:
+        message: "Ding dong, det ringer på døra"
+    -  service: tts.google_say
+       entity_id: media_player.stue
+       data:
+         message: 'Ding dong, det ringer på døra'
+
+- alias: 'Notify - HassIO Update'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.updater
+      to: 'on'
+  action:
+    - service: notify.ios_oleandre
+      data:
+        message: "Ny oppdatering for HassIO"
+
 - alias: 'Notify - Bokashi - Today'
   trigger:
   - at: '17:30:00'
