@@ -351,7 +351,7 @@
 
 
 #Misc
-- alias: 'Restart HA'
+- alias: 'Misc - Restart HA'
   trigger:
   -  platform: time
      at: "02:00:00"
@@ -535,7 +535,7 @@
   condition:
        - condition: numeric_state
          entity_id: sensor.netatmo_ute_temperature
-         below: 12
+         below: 10
   action:
     - service: notify.all
       data:
@@ -554,7 +554,7 @@
      conditions:
        - condition: numeric_state
          entity_id: sensor.netatmo_ute_temperature
-         below: 12
+         below: 10
        - condition: state
          entity_id: binary_sensor.workday_sensor_2
          state: 'on'

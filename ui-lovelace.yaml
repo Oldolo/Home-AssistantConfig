@@ -67,7 +67,7 @@ views:
           - type: section
             label: Olivia sitt rom
           - type: custom:slider-entity-row
-            entity: light.tak_olivia
+            entity: light.olivia_tak
             name: Tak
             toggle: true
             hide_when_off: true
@@ -424,6 +424,16 @@ views:
                   - entity: device_tracker.upsen
                     icon: mdi:car-sports
 
+      - type: entities
+        entities:
+          - entity: sensor.timer_mandag
+            name: Mandag
+          - entity: sensor.timer_tirsdag
+            name: Tirsdag
+          - entity: sensor.timer_onsdag
+            name: Onsdag
+          - entity: sensor.timer_torsdag
+            name: Torsdag
 
   - icon: mdi:snowflake
     title: Hytta

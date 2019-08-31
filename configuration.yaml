@@ -34,7 +34,7 @@ zone:
     icon: mdi:snowflake
 
 recorder:
-  purge_keep_days: 3
+  purge_keep_days: 5
 
 discovery:
   ignore:
@@ -75,6 +75,7 @@ notify:
 
 binary_sensor:
   - platform: workday
+    workdays: [mon, tue, wed, thu]
     country: "NO"
 
   - platform: workday
@@ -199,6 +200,39 @@ input_boolean:
 
 #Sensor
 sensor:
+
+
+  - platform: history_stats
+    name: timer_mandag
+    entity_id: person.ole_andre
+    state: 'Jobb'
+    type: time
+    start: '{{ as_timestamp( now().replace(hour=0).replace(minute=0).replace(second=0) ) - now().weekday() * 86400 }}'
+    end: '{{ as_timestamp( now().replace(hour=23).replace(minute=59).replace(second=59) ) - now().weekday() * 86400 }}'
+
+  - platform: history_stats
+    name: timer_tirsdag
+    entity_id: person.ole_andre
+    state: 'Jobb'
+    type: time
+    start: '{{ as_timestamp( now().replace(hour=0).replace(minute=0).replace(second=0) ) - (now().weekday() - 1) * 86400 }}'
+    end: '{{ as_timestamp( now().replace(hour=23).replace(minute=59).replace(second=59) ) - (now().weekday() - 1) * 86400 }}'
+
+  - platform: history_stats
+    name: timer_onsdag
+    entity_id: person.ole_andre
+    state: 'Jobb'
+    type: time
+    start: '{{ as_timestamp( now().replace(hour=0).replace(minute=0).replace(second=0) ) - (now().weekday() - 2) * 86400 }}'
+    end: '{{ as_timestamp( now().replace(hour=23).replace(minute=59).replace(second=59) ) - (now().weekday() - 2) * 86400 }}'
+
+  - platform: history_stats
+    name: timer_torsdag
+    entity_id: person.ole_andre
+    state: 'Jobb'
+    type: time
+    start: '{{ as_timestamp( now().replace(hour=0).replace(minute=0).replace(second=0) ) - (now().weekday() - 3) * 86400 }}'
+    end: '{{ as_timestamp( now().replace(hour=23).replace(minute=59).replace(second=59) ) - (now().weekday() - 3) * 86400 }}'
 
   - platform: scrape
     resource: !secret url_bhg
