@@ -84,7 +84,7 @@ binary_sensor:
     days_offset: 1
 
   - platform: wyzesense
-    device: "/dev/hidraw1"
+    device: "/dev/hidraw0"
 
 switch:
   - platform: template
@@ -108,6 +108,11 @@ camera:
     name: Weather hovden
     still_image_url: https://www.yr.no/sted/Norge/Aust-Agder/Bykle/Hovden/meteogram.svg
     content_type: 'image/svg+xml'
+
+  - platform: generic
+    name: Test
+    still_image_url: https://www.home-assistant.io/images/favicon-192x192-full.png
+    stream_source: !secret cam1
 
 spotcast:
   username: !secret spotify_username
