@@ -6,3 +6,7 @@ climate_automation:
    - automation.turn_on_for_the_daytime
    - automation.turn_up_the_heat_daytime
    - automation.calm_down_i_am_waking_up
+
+person:
+   - person.christina
+   - person.ole_andre

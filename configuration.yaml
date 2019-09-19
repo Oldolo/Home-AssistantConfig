@@ -114,9 +114,9 @@ camera:
     still_image_url: https://www.home-assistant.io/images/favicon-192x192-full.png
     stream_source: !secret cam1
 
-spotcast:
-  username: !secret spotify_username
-  password: !secret spotify_password
+#spotcast:
+#  username: !secret spotify_username
+#  password: !secret spotify_password
 
 google:
   client_id: !secret google_ID
@@ -206,6 +206,27 @@ input_boolean:
 #Sensor
 sensor:
 
+  - platform: attributes
+    attribute: battery_level
+    unit_of_measurement: "%"
+    entities:
+      - binary_sensor.wyzesense_77870e5c
+      - binary_sensor.wyzesense_77871779
+      - binary_sensor.wyzesense_7787804a
+      - zwave.poly_control_danalock_v3_btze
+
+  - platform: avfallsor
+
+
+  - platform: places
+    devicetracker_id: device_tracker.oleandre
+    map_provider: google
+    home_zone: zone.home
+
+  - platform: places
+    devicetracker_id: device_tracker.christina
+    map_provider: google
+    home_zone: zone.home
 
   - platform: history_stats
     name: timer_mandag
@@ -239,11 +260,6 @@ sensor:
     start: '{{ as_timestamp( now().replace(hour=0).replace(minute=0).replace(second=0) ) - (now().weekday() - 3) * 86400 }}'
     end: '{{ as_timestamp( now().replace(hour=23).replace(minute=59).replace(second=59) ) - (now().weekday() - 3) * 86400 }}'
 
-  - platform: scrape
-    resource: !secret url_bhg
-    name: bhg_alert
-    select: 'body > section > div > div > div > div > div.news-alert-link > a.listteaser'
-
   - platform: entur_public_transport
     name: Rutetider
     stop_ids:
@@ -262,11 +278,7 @@ sensor:
     unit_of_measurement: "°C"
     value_template: '{{ value | multiply(0.001) | round(1) }}'
 
-  - platform: spotcast
-
-  - platform: ical
-    name: "Soppel"
-    url: !secret soppel_calendar
+#  - platform: spotcast
 
   - platform: waze_travel_time
     name: Ole Andre hjemme
@@ -309,43 +321,10 @@ sensor:
     sensors:
 
       tomming_bokashi:
-        friendly_name: "Tømme Bokashi"
+        friendly_name: "Bokashi"
         icon_template: mdi:food-apple
         entity_id: sensor.date
         value_template: '{{ (((states.input_datetime.bokashi.attributes.timestamp)-as_timestamp(now())) | int /60/1440) | round(0) }}'
-
-      collect_next_date:
-        friendly_name: "Neste Tømmedag"
-        entity_id: sensor.date
-        value_template: '{{ (as_timestamp(states.sensor.soppel_event_0.attributes.start) | timestamp_custom("%j") | int) - (as_timestamp(now()) | timestamp_custom("%-j") | int) }}'
-        icon_template: >
-          {% if 'Metal' in states.sensor.soppel_event_0.attributes.name %}
-            mdi:spray
-          {% elif 'Gronn' in states.sensor.soppel_event_0.attributes.name %}
-            mdi:recycle
-          {% else %}
-            mdi:trash-can
-          {% endif %}
-
-      collect_next_type:
-        friendly_name: "Neste Tømmetype"
-        entity_id: sensor.date
-        value_template: >
-          {% if 'Metal' in states.sensor.soppel_event_0.attributes.name %}
-            Restavfall, Glass og Metal
-          {% elif 'Gronn' in states.sensor.soppel_event_0.attributes.name %}
-            Restavfall, papir
-          {% else %}
-            Restavfall
-          {% endif %}
-        icon_template: >
-          {% if 'Metal' in states.sensor.soppel_event_0.attributes.name %}
-            mdi:spray
-          {% elif 'Gronn' in states.sensor.soppel_event_0.attributes.name %}
-            mdi:recycle
-          {% else %}
-            mdi:trash-can
-          {% endif %}
 
       samsung_temp:
         value_template: '{{ states.climate.samsung.attributes.current_temperature}}'
@@ -428,8 +407,12 @@ sensor:
         {% set minutes = states('sensor.christina_hjemme') | int %}
         {{ (as_timestamp(now()) + (minutes * 60)) | timestamp_custom('%H:%M') }}
 
-      next_turnusstart:
-        value_template: '{{ (as_timestamp(states.calendar.turnus_christina.attributes.start_time) | timestamp_custom("%j%H%M") | int) - (as_timestamp(now()) | timestamp_custom("%j%H%M") | int) }}'
+      next_turnusstart_dager:
+        value_template: '{{ (as_timestamp(states.calendar.turnus_christina.attributes.start_time) | timestamp_custom("%j") | int) - (as_timestamp(now()) | timestamp_custom("%j") | int) }}'
+        entity_id: sensor.time_date
+
+      next_turnusstart_timer:
+        value_template: '{{ (as_timestamp(states.calendar.turnus_christina.attributes.start_time) | timestamp_custom("%H%M") | int) - (as_timestamp(now()) | timestamp_custom("%H%M") | int) }}'
         entity_id: sensor.time_date
 
 

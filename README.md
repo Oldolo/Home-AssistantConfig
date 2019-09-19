@@ -2,7 +2,7 @@
 
 This is my Home Assistant configuration.
 I try to connect most of the hardware and services that I often use. We use the iOS app to manage and find the information we need. The goal is to automate what we can, but also to have one stop where we find all the information about the house, weather, cars, activity etc.
-Currently I am running on a Dell Optiplex installed with Ubuntu Server/Docker and HassIO. 
+Currently I am running on a Dell Optiplex installed with Ubuntu Server/Docker and HassIO.
 
 
 ### Hardware
@@ -10,6 +10,7 @@ Currently I am running on a Dell Optiplex installed with Ubuntu Server/Docker an
 *  [Ikea Trådfri bulbs](https://www.ikea.com/no/no/cat/smartbelysning-36812/)
 *  [Google Home](https://store.google.com/product/google_home)
    *  [Google Home](https://store.google.com/product/google_home)
+   *  [Google Nest Hub](https://store.google.com/product/google_nest_hub)
    *  [Google Mini](https://store.google.com/product/google_home_mini)
    *  [Chromecast](https://store.google.com/product/chromecast)
    *  [Chromecast Audio](https://www.google.com/intl/no_no/chromecast/audio/buy/)
@@ -21,7 +22,7 @@ Currently I am running on a Dell Optiplex installed with Ubuntu Server/Docker an
 *  [Netatmo Weather Station](https://www.netatmo.com/no-no/weather/weatherstation)
 *  [Fitbit Aria 2](https://www.fitbit.com/aria2)
 *  [Wyze Sense](https://www.wyze.com/wyze-sense/) Currently setting up and testing
-*  [ConBee](https://shop.dresden-elektronik.de/conbee-2.html) Currently setting up and testing
+*  [ConBee](https://shop.dresden-elektronik.de/conbee-2.html)
 *  Nissan Leaf 2.0
 *  Volkswagen e-UP
 
@@ -34,7 +35,6 @@ Currently I am running on a Dell Optiplex installed with Ubuntu Server/Docker an
 *  [Wireguard](https://github.com/hassio-addons/repository/tree/master/wireguard)
 *  [Portainer](https://github.com/hassio-addons/repository/tree/master/portainer)
 *  [Google Calendar](https://www.home-assistant.io/components/calendar.google/)
-   *  Garbage Collection
    *  Working Schedule
    *  Personal Schedule
 *  [Met.no](https://www.met.no/)
@@ -45,6 +45,8 @@ Currently I am running on a Dell Optiplex installed with Ubuntu Server/Docker an
 
 ### [HACS Custom Elements](https://github.com/custom-components/hacs)
 *  [Spotcast](https://github.com/fondberg/spotcast)
+*  [Avfallsor](https://github.com/custom-components/sensor.avfallsor)
+*  [Attributes](https://github.com/pilotak/homeassistant-attributes)
 *  [iCal Sensor](https://github.com/tybritten/ical-sensor-homeassistant)
 *  [iPhone Device Tracker](https://github.com/mudape/iphonedetect)
 *  [Atomic Calendar](https://github.com/atomic7777/atomic_calendar)

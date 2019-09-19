@@ -13,8 +13,8 @@ resources:
     type: module
   - url: /community_plugin/entur-card/entur-card.js
     type: js
-
-
+  - url: /community_plugin/monster-card/monster-card.js
+    type: module
 
 views:
   - icon: mdi:home-assistant
@@ -42,52 +42,20 @@ views:
           - entity: input_boolean.autolock
             name: Automatisk Lås
 
-
-      - type: entities
-        entities:
-          - type: section
-            label: Stue
-          - type: custom:slider-entity-row
-            entity: light.stue_gulv
-            name: Gulv
-            toggle: true
-            hide_when_off: true
-          - type: custom:slider-entity-row
-            entity: light.stue_bokhylle
-            name: Hylle
-            toggle: true
-            hide_when_off: true
-          - type: section
-            label: Gjesterom
-          - type: custom:slider-entity-row
-            entity: light.gjesterom_tak
-            name: Tak
-            toggle: true
-            hide_when_off: true
-          - type: section
-            label: Olivia sitt rom
-          - type: custom:slider-entity-row
-            entity: light.olivia_tak
-            name: Tak
-            toggle: true
-            hide_when_off: true
-          - type: custom:slider-entity-row
-            entity: light.sovelys_olivia
-            name: Sovelys
-            toggle: true
-            hide_when_off: true
-          - type: section
-            label: Soverom
-          - type: custom:slider-entity-row
-            entity: light.soverom_tak
-            name: Tak
-            toggle: true
-            hide_when_off: true
-          - type: custom:slider-entity-row
-            entity: light.leselys_soverom
-            name: Leselys
-            toggle: true
-            hide_when_off: true
+      - type: custom:monster-card
+        card:
+          type: entities
+        filter:
+          include:
+            - domain: light
+              options:
+                type: custom:slider-entity-row
+                toggle: true
+                hide_when_off: true
+          exclude:
+            - entity_id: light.all_lights
+            - domain: light
+              state: unavailable
 
   - icon: mdi:car
     title: Bil
@@ -273,6 +241,7 @@ views:
           - sensor.wind_direction_text
           - sensor.vindhastighet_tekst
           - sensor.netatmo_ute_temperature
+          - sensor.temperature_6
 
       - type: entities
         entities:
@@ -286,7 +255,12 @@ views:
 
       - type: glance
         entities:
-          - entity: sensor.collect_next_date
+          - entity: sensor.avfallsor_mixed_1001_96_937_0
+            icon: mdi:trash-can
+          - entity: sensor.avfallsor_paper_1001_96_937_0
+            icon: mdi:recycle
+          - entity: sensor.avfallsor_metal_1001_96_937_0
+            icon: mdi:spray
           - entity: sensor.tomming_bokashi
 
       - type: custom:entur-card
@@ -341,6 +315,28 @@ views:
                 color: "#f77753"
               - value: 25
                 color: "#ff3f14"
+          - type: custom:mini-graph-card
+            icon: mdi:home-thermometer
+            entities:
+              - entity: sensor.temperature_3
+                name: Olivia
+                show_fill: false
+            color_thresholds:
+              - value: 19
+                color: "#4786de"
+              - value: 20
+                color: "#7e9ad7"
+              - value: 21
+                color: "#a5b0cf"
+              - value: 22
+                color: "#c6c6c6"
+              - value: 23
+                color: "#e6a18c"
+              - value: 24
+                color: "#f77753"
+              - value: 25
+                color: "#ff3f14"
+
 
       - type: entities
         entities:
@@ -366,11 +362,6 @@ views:
   - icon: mdi:run
     title: Brukere
     cards:
-
-      - type: entities
-        entities:
-          - entity: sensor.bhg_alert
-            name: Siste nytt
 
       - type: "custom:atomic-calendar"
         CalEventIcon2Filter: D6,D8,D9,D10,D11,D12,D13
@@ -498,6 +489,22 @@ views:
             name: Breaking Changes
           - entity: sensor.snapshot_backup
             name: Backup
+
+      - type: custom:monster-card
+        card:
+          type: entities
+          show_header_toggle: false
+        filter:
+          include:
+            - entity_id: '*battery_level*'
+              state: '< 35'
+            - entity_id: '*battery_percent*'
+              attributes:
+              state: '< 35'
+          exclude:
+            - entity_id: '*iphone*'
+            - entity_id: 'sensor.upsen_battery_level'
+            
 
       - type: entities
         entities:

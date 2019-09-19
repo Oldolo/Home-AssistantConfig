@@ -349,6 +349,58 @@
     - service: input_boolean.turn_on
       entity_id: input_boolean.autolock
 
+#Doorbell
+- alias: 'Doorbell - Ring doorbell'
+  trigger:
+    platform: event
+    event_type: deconz_event
+    event_data:
+      id: smart_switch
+  action:
+    - service: notify.all
+      data:
+        message: "Noen ringer på døra"
+    - service: media_player.volume_set
+
+- alias: 'Doorbell - Ring doorbell TTS daytime'
+  trigger:
+    platform: event
+    event_type: deconz_event
+    event_data:
+      id: smart_switch
+  condition:
+    - condition: time
+      after: '08:00:00'
+      before: '18:00:00'
+  action:
+    - service: media_player.volume_set
+      data_template:
+        entity_id: media_player.alle
+        volume_level: 0.4
+    -  service: tts.google_say
+       entity_id: media_player.alle
+       data:
+         message: 'Det ringer på døra'
+
+- alias: 'Doorbell - Ring doorbell TTS afternoon'
+  trigger:
+    platform: event
+    event_type: deconz_event
+    event_data:
+      id: smart_switch
+  condition:
+    - condition: time
+      after: '18:00:00'
+      before: '08:00:00'
+  action:
+    - service: media_player.volume_set
+      data_template:
+        entity_id: media_player.2etg
+        volume_level: 0.4
+    -  service: tts.google_say
+       entity_id: media_player.2etg
+       data:
+         message: 'Det ringer på døra'
 
 #Misc
 - alias: 'Misc - Restart HA'
@@ -359,18 +411,26 @@
     - service: homeassistant.restart
 
 #Notifications Push and TTS
-- alias: 'Notify - Garbage Collection - Tomorrow'
+- alias: 'Notify - Garbage Collection - Mix - Tomorrow'
   trigger:
   - platform: time
     at: '21:00:00'
   condition:
-  - condition: state
-    entity_id: sensor.collect_next_date
-    state: '1'
+     condition: and
+     conditions:
+       - condition: state
+         entity_id: sensor.avfallsor_mixed_1001_96_937_0
+         state: '1'
+       - condition: numeric_state
+         entity_id: sensor.avfallsor_metal_1001_96_937_0
+         above: '1'
+       - condition: numeric_state
+         entity_id: sensor.avfallsor_paper_1001_96_937_0
+         above: '1'
   action:
     - service: notify.all
       data:
-        message: "Søppeltømming i morgen: {{ states('sensor.collect_next_type') }}"
+        message: "Søppeltømming i morgen: Restavfall"
     - service: media_player.volume_set
       data_template:
         entity_id: media_player.alle
@@ -378,7 +438,49 @@
     -  service: tts.google_say
        entity_id: media_player.alle
        data:
-         message: 'Har dere husket å trille ut søppeldunkene?'
+         message: 'Har dere husket å trille ut restavfall?'
+
+- alias: 'Notify - Garbage Collection - Paper - Tomorrow'
+  trigger:
+  - platform: time
+    at: '21:00:00'
+  condition:
+  - condition: state
+    entity_id: sensor.avfallsor_paper_1001_96_937_0
+    state: '1'
+  action:
+    - service: notify.all
+      data:
+        message: "Papp og Plast tømmes i morgen"
+    - service: media_player.volume_set
+      data_template:
+        entity_id: media_player.alle
+        volume_level: 0.4
+    -  service: tts.google_say
+       entity_id: media_player.alle
+       data:
+         message: 'Har dere husket å trille ut papp og plast?'
+
+- alias: 'Notify - Garbage Collection - Metal - Tomorrow'
+  trigger:
+  - platform: time
+    at: '21:00:00'
+  condition:
+  - condition: state
+    entity_id: sensor.avfallsor_metal_1001_96_937_0
+    state: '1'
+  action:
+    - service: notify.all
+      data:
+        message: "Metal søppel i morgen"
+    - service: media_player.volume_set
+      data_template:
+        entity_id: media_player.alle
+        volume_level: 0.4
+    -  service: tts.google_say
+       entity_id: media_player.alle
+       data:
+         message: 'Har dere husket å trille ut metal dunken?'
 
 - alias: 'Notify - Garbage Collection - Today'
   trigger:
@@ -386,35 +488,12 @@
     at: '06:15:00'
   condition:
   - condition: state
-    entity_id: sensor.collect_next_date
+    entity_id: sensor.avfallsor_mixed_1001_96_937_0
     state: '0'
   action:
     - service: notify.all
       data:
-        message: "Søppeltømming i dag: {{ states('sensor.collect_next_type') }}"
-
-- alias: 'Notify - News bhg'
-  trigger:
-    - platform: state
-      entity_id: sensor.bhg_alert
-  action:
-    - service: notify.all
-      data:
-        message: "Nytt fra bhg: {{ states('sensor.bhg_alert') }}"
-
-- alias: 'Notify - Doorbell'
-  trigger:
-    - platform: state
-      entity_id: binary_sensor.wyzesense_77871779
-      to: 'off'
-  action:
-    - service: notify.all
-      data:
-        message: "Ding dong, det ringer på døra"
-    -  service: tts.google_say
-       entity_id: media_player.stue
-       data:
-         message: 'Ding dong, det ringer på døra'
+        message: "Husket å trille ut søppel?"
 
 - alias: 'Notify - HassIO Update'
   trigger:

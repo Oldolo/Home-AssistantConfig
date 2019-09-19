@@ -5,3 +5,13 @@
 #      else if (state < 7) return (new Date(new Date().setDate(new Date().getDate()
 #      + Number(state))).toLocaleDateString('en-us', {weekday: 'short'})); else
 #      return state + ' Days';
+
+sensor.avfallsor_mixed_1001_96_937_0:
+  icon: mdi:trash-can
+  unit_of_measurement:
+sensor.avfallsor_paper_1001_96_937_0:
+  icon: mdi:recycle
+  unit_of_measurement:
+sensor.avfallsor_metal_1001_96_937_0:
+  icon: mdi:spray
+  unit_of_measurement: 
