@@ -2,7 +2,7 @@
 
 This is my Home Assistant configuration.
 I try to connect most of the hardware and services that I often use. We use the iOS app to manage and find the information we need. The goal is to automate what we can, but also to have one stop where we find all the information about the house, weather, cars, activity etc.
-Currently I am running on a Dell Optiplex installed with Ubuntu Server/Docker and HassIO.
+The setup on is running on a Raspberry Pi 4
 
 
 ### Hardware
@@ -21,7 +21,6 @@ Currently I am running on a Dell Optiplex installed with Ubuntu Server/Docker an
 *  [Tibber Pulse](https://norge.tibber.com/products/pulse/)
 *  [Netatmo Weather Station](https://www.netatmo.com/no-no/weather/weatherstation)
 *  [Fitbit Aria 2](https://www.fitbit.com/aria2)
-*  [Wyze Sense](https://www.wyze.com/wyze-sense/) Currently setting up and testing
 *  [ConBee](https://shop.dresden-elektronik.de/conbee-2.html)
 *  Nissan Leaf 2.0
 *  Volkswagen e-UP
@@ -47,7 +46,7 @@ Currently I am running on a Dell Optiplex installed with Ubuntu Server/Docker an
 *  [Spotcast](https://github.com/fondberg/spotcast)
 *  [Avfallsor](https://github.com/custom-components/sensor.avfallsor)
 *  [Attributes](https://github.com/pilotak/homeassistant-attributes)
-*  [iCal Sensor](https://github.com/tybritten/ical-sensor-homeassistant)
+*  [Places](https://github.com/custom-components/places)
 *  [iPhone Device Tracker](https://github.com/mudape/iphonedetect)
 *  [Atomic Calendar](https://github.com/atomic7777/atomic_calendar)
 *  [Lovelace Slider Entity Row](https://github.com/thomasloven/lovelace-slider-entity-row)
@@ -56,8 +55,7 @@ Currently I am running on a Dell Optiplex installed with Ubuntu Server/Docker an
 *  [Simple Thermostat](https://github.com/nervetattoo/simple-thermostat)
 *  [Weather Card](https://github.com/bramkragten/weather-card)
 *  [Entur Card](https://github.com/jonkristian/entur-card)
-*  [Wyze Sense Component](https://github.com/kevinvincent/ha-wyzesense)
-
+*  [Monster Card](https://github.com/custom-cards/monster-card)
 
 ### Automations
 

@@ -349,6 +349,16 @@
     - service: input_boolean.turn_on
       entity_id: input_boolean.autolock
 
+- alias: 'Lock - Unlock from iOS Push'
+  trigger:
+    platform: event
+    event_type: ios.notification_action_fired
+    event_data:
+      actionName: UNLOCK
+  action:
+    - service: lock.unlock
+      entity_id: lock.poly_control_danalock_v3_btze_locked
+
 #Doorbell
 - alias: 'Doorbell - Ring doorbell'
   trigger:
@@ -360,7 +370,9 @@
     - service: notify.all
       data:
         message: "Noen ringer på døra"
-    - service: media_player.volume_set
+        data:
+          push:
+            category: "doorbell"
 
 - alias: 'Doorbell - Ring doorbell TTS daytime'
   trigger:
@@ -608,13 +620,21 @@
 
 - alias: 'Car - Start heating on upsen'
   trigger:
-    - platform: numeric_state
-      entity_id: sensor.next_turnusstart
-      below: 30
+    - platform: state
+      entity_id: sensor.next_turnusstart_min
+      to: '40'
   condition:
+     condition: and
+     conditions:
        - condition: numeric_state
          entity_id: sensor.netatmo_ute_temperature
          below: 10
+       - condition: state
+         entity_id: sensor.next_turnusstart_dager
+         state: '0'
+       - condition: state
+         entity_id: sensor.next_turnusstart_timer
+         state: '0'
   action:
     - service: notify.all
       data:
@@ -623,6 +643,38 @@
       entity_id: switch.upsen_climatisation
     - service: switch.turn_on
       entity_id: switch.upsen_window_heater
+
+- alias: 'Car - Start heating leaf at work'
+  trigger:
+    platform: time
+    at: '14:20:00'
+  condition:
+     condition: and
+     conditions:
+       - condition: numeric_state
+         entity_id: sensor.netatmo_ute_temperature
+         below: 8
+       - condition: state
+         entity_id: person.ole_andre
+         state: 'jobb'
+  action:
+    - service: notify.ios_oleandre
+      data:
+        message: "Varme bilen?"
+        data:
+          push:
+            category: "heat"
+
+- alias: 'Car - Start heating on leaf from iOS Push'
+  trigger:
+    platform: event
+    event_type: ios.notification_action_fired
+    event_data:
+      actionName: HEAT
+  action:
+    - service: switch.turn_on
+      entity_id: switch.leaf1olea_climate_control
+
 
 - alias: 'Car - Start heating on leafen'
   trigger:
@@ -637,6 +689,9 @@
        - condition: state
          entity_id: binary_sensor.workday_sensor_2
          state: 'on'
+       - condition: state
+         entity_id: person.ole_andre
+         state: 'home'
   action:
     - service: notify.ios_oleandre
       data:

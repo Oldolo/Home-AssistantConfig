@@ -29,6 +29,8 @@ views:
             name: Stue
         hide:
           state: true
+        control:
+          _icons: false
 
       - type: entities
         entities:
@@ -171,16 +173,6 @@ views:
                   id: spotcast.start
                   data:
                     entity_id: media_player.bad
-                - icon: mdi:speaker
-                  type: service
-                  id: spotcast.start
-                  data:
-                    entity_id: media_player.chromecastaudio2230
-                - icon: mdi:sofa
-                  type: service
-                  id: spotcast.start
-                  data:
-                    entity_id: media_player.stue
           - type: custom:mini-media-player
             entity: media_player.alle
             group: true
@@ -206,14 +198,6 @@ views:
               progress: true
               info: true
           - type: custom:mini-media-player
-            entity: media_player.stue
-            group: true
-            hide:
-              controls: true
-              power: true
-              progress: true
-              info: true
-          - type: custom:mini-media-player
             entity: media_player.chromecastaudio2230
             group: true
             hide:
@@ -221,6 +205,23 @@ views:
               power: true
               progress: true
               info: true
+          - type: custom:mini-media-player
+            entity: media_player.nesthub7877
+            group: true
+            hide:
+              controls: true
+              power: true
+              progress: true
+              info: true
+          - type: custom:mini-media-player
+            entity: media_player.stue
+            group: true
+            hide:
+              controls: true
+              power: true
+              progress: true
+              info: true
+
 
   - icon: mdi:information
     title: Informasjon
@@ -504,7 +505,7 @@ views:
           exclude:
             - entity_id: '*iphone*'
             - entity_id: 'sensor.upsen_battery_level'
-            
+
 
       - type: entities
         entities:

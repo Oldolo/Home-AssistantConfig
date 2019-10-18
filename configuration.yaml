@@ -42,7 +42,39 @@ discovery:
     - igd
 
 default_config:
-breaking_changes:
+
+proximity:
+  oleandre:
+    devices:
+      - device_tracker.oleandre
+    tolerance: 500
+    unit_of_measurement: km
+  christina:
+    devices:
+      - device_tracker.christina
+    tolerance: 500
+    unit_of_measurement: km
+
+ios:
+  push:
+    categories:
+      - name: Doorbell
+        identifier: 'doorbell'
+        actions:
+          - identifier: 'UNLOCK'
+            title: 'Lås opp'
+            activationMode: 'background'
+            authenticationRequired: true
+            destructive: true
+      - name: 'Heat on'
+        identifier: 'heat'
+        actions:
+          - identifier: 'HEAT'
+            title: 'Start'
+            activationMode: 'background'
+            authenticationRequired: false
+            destructive: true
+
 
 device_tracker:
   - platform: iphonedetect
@@ -109,14 +141,9 @@ camera:
     still_image_url: https://www.yr.no/sted/Norge/Aust-Agder/Bykle/Hovden/meteogram.svg
     content_type: 'image/svg+xml'
 
-  - platform: generic
-    name: Test
-    still_image_url: https://www.home-assistant.io/images/favicon-192x192-full.png
-    stream_source: !secret cam1
-
-#spotcast:
-#  username: !secret spotify_username
-#  password: !secret spotify_password
+spotcast:
+  username: !secret spotify_username
+  password: !secret spotify_password
 
 google:
   client_id: !secret google_ID
@@ -217,17 +244,6 @@ sensor:
 
   - platform: avfallsor
 
-
-  - platform: places
-    devicetracker_id: device_tracker.oleandre
-    map_provider: google
-    home_zone: zone.home
-
-  - platform: places
-    devicetracker_id: device_tracker.christina
-    map_provider: google
-    home_zone: zone.home
-
   - platform: history_stats
     name: timer_mandag
     entity_id: person.ole_andre
@@ -278,7 +294,7 @@ sensor:
     unit_of_measurement: "°C"
     value_template: '{{ value | multiply(0.001) | round(1) }}'
 
-#  - platform: spotcast
+  - platform: spotcast
 
   - platform: waze_travel_time
     name: Ole Andre hjemme
@@ -412,9 +428,12 @@ sensor:
         entity_id: sensor.time_date
 
       next_turnusstart_timer:
-        value_template: '{{ (as_timestamp(states.calendar.turnus_christina.attributes.start_time) | timestamp_custom("%H%M") | int) - (as_timestamp(now()) | timestamp_custom("%H%M") | int) }}'
+        value_template: '{{ (as_timestamp(states.calendar.turnus_christina.attributes.start_time) | timestamp_custom("%H") | int) - (as_timestamp(now()) | timestamp_custom("%H") | int) }}'
         entity_id: sensor.time_date
 
+      next_turnusstart_min:
+        value_template: '{{ (as_timestamp(states.calendar.turnus_christina.attributes.start_time) | timestamp_custom("%M") | int) - (as_timestamp(now()) | timestamp_custom("%M") | int) }}'
+        entity_id: sensor.time_date
 
 # Include
 cloud: !include cloud.yaml
