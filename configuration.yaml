@@ -115,9 +115,6 @@ binary_sensor:
     workdays: [mon, tue, wed, thu]
     days_offset: 1
 
-  - platform: wyzesense
-    device: "/dev/hidraw0"
-
 switch:
   - platform: template
     switches:
@@ -237,9 +234,6 @@ sensor:
     attribute: battery_level
     unit_of_measurement: "%"
     entities:
-      - binary_sensor.wyzesense_77870e5c
-      - binary_sensor.wyzesense_77871779
-      - binary_sensor.wyzesense_7787804a
       - zwave.poly_control_danalock_v3_btze
 
   - platform: avfallsor

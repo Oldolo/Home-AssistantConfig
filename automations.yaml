@@ -4,7 +4,7 @@
   trigger:
     - platform: numeric_state
       entity_id: sensor.netatmo_inne_temperature
-      above: 21.5
+      above: 22
   condition:
     condition: and
     conditions:
@@ -32,7 +32,7 @@
   trigger:
     - platform: numeric_state
       entity_id: sensor.netatmo_inne_temperature
-      below: 21.2
+      below: 21.5
   condition:
     condition: and
     conditions:
@@ -359,6 +359,94 @@
     - service: lock.unlock
       entity_id: lock.poly_control_danalock_v3_btze_locked
 
+#Lights
+
+- alias: Lights - Turn on bedroom based on movement
+  trigger:
+    platform: state
+    entity_id: binary_sensor.presence_17
+    to: 'on'
+  condition:
+     condition: and
+     conditions:
+      - condition: state
+        entity_id: group.motion_bedroom
+        state: 'on'
+      - condition: state
+        entity_id: sun.sun
+        state: 'below_horizon'
+  action:
+    service: light.turn_on
+    entity_id: light.soverom_tak
+
+- alias: Lights - Turn off bedroom after 2 min
+  trigger:
+    platform: state
+    entity_id: binary_sensor.presence_17
+    to: 'off'
+    for:
+      minutes: 2
+  condition:
+    - condition: state
+      entity_id: group.motion_bedroom
+      state: 'on'
+  action:
+    service: light.turn_off
+    entity_id: light.soverom_tak
+
+- alias: Lights - Turn on spare bedroom based on movement
+  trigger:
+    platform: state
+    entity_id: binary_sensor.presence_15
+    to: 'on'
+  condition:
+     condition: and
+     conditions:
+      - condition: state
+        entity_id: group.motion_spare_bedroom
+        state: 'on'
+      - condition: state
+        entity_id: sun.sun
+        state: 'below_horizon'
+  action:
+    service: light.turn_on
+    entity_id: light.gjesterom_tak
+
+- alias: Lights - Turn off spare bedroom after 2 min
+  trigger:
+    platform: state
+    entity_id: binary_sensor.presence_15
+    to: 'off'
+    for:
+      minutes: 2
+  condition:
+    - condition: state
+      entity_id: group.motion_spare_bedroom
+      state: 'on'
+  action:
+    service: light.turn_off
+    entity_id: light.gjesterom_tak
+
+- alias: Lights - Turn on light automation
+  trigger:
+    platform: time
+    at: '09:00:00'
+  action:
+    service: homeassistant.turn_on
+    entity_id:
+      - group.motion_bedroom
+      - group.motion_spare_bedroom
+
+- alias: Lights - Turn off light automation
+  trigger:
+    platform: time
+    at: '22:30:00'
+  action:
+    service: homeassistant.turn_off
+    entity_id:
+      - group.motion_bedroom
+      - group.motion_spare_bedroom
+
 #Doorbell
 - alias: 'Doorbell - Ring doorbell'
   trigger:
@@ -580,6 +668,16 @@
        entity_id: media_player.alle
        data:
          message: 'Christina har reist fra jobb, jeg tror nok hun er på vei hjem'
+
+- alias: 'Shortcuts Webhook Call Service'
+  trigger:
+    platform: webhook
+    webhook_id: shortcuts_notify
+  action:
+    - service: notify.ios_oleandre
+      data:
+        message: "Test Shortcuts"
+
 
 # Car
 - alias: 'Car - Price Level Change when charging car'

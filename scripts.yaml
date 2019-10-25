@@ -1,0 +1,22 @@
+halloween_script:
+  sequence:
+    - service: script.turn_on
+      data:
+        entity_id: script.flash_halloween
+    - delay: '00:00:15'
+    - service: script.turn_on
+      data:
+        entity_id: script.halloween_loop
+halloween_loop:
+  sequence:
+    - service: script.turn_on
+      data:
+        entity_id: script.halloween_script
+flash_halloween:
+  sequence:
+    - service: light.turn_on
+      data:
+        entity_id: light.gjesterom_tak
+        brightness: 175
+        rgb_color: [254, 128, 0]
+        flash: long

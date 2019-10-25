@@ -44,6 +44,15 @@ views:
           - entity: input_boolean.autolock
             name: Automatisk Lås
 
+      - type: entities
+        entities:
+          - entity: group.motion_bedroom
+            name: Automatisk Lys Soverom
+            icon: mdi:motion-sensor
+          - entity: group.motion_spare_bedroom
+            name: Automatisk Lys Gjesterom
+            icon: mdi:motion-sensor
+
       - type: custom:monster-card
         card:
           type: entities

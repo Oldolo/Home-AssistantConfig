@@ -22,6 +22,9 @@ The setup on is running on a Raspberry Pi 4
 *  [Netatmo Weather Station](https://www.netatmo.com/no-no/weather/weatherstation)
 *  [Fitbit Aria 2](https://www.fitbit.com/aria2)
 *  [ConBee](https://shop.dresden-elektronik.de/conbee-2.html)
+*  [Aqara Wireless Mini Switch](https://www.aqara.com/en/smart_wireless_mini_switch.html)
+*  [Aqara Motion Sensor](https://www.aqara.com/en/human_motion_sensor.html)
+*  [Aqara Temperature and Humidity Sensor](https://www.aqara.com/en/temperature_humidity_sensor.html)
 *  Nissan Leaf 2.0
 *  Volkswagen e-UP
 
@@ -62,6 +65,7 @@ The setup on is running on a Raspberry Pi 4
 *  Heating and Cooling with AC
 *  Heating cars when cold in the morning
 *  Lock / Unlock frontdoor
+*  Lights based on movement
 *  Notifications with TTS and Push
    *  Garbage Collection
    *  ETA after leaving work

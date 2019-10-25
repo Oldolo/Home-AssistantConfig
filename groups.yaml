@@ -10,3 +10,11 @@ climate_automation:
 person:
    - person.christina
    - person.ole_andre
+
+motion_bedroom:
+   - automation.lights_turn_on_bedroom_based_on_movement
+   - automation.lights_turn_off_bedroom_after_5_min
+
+motion_spare_bedroom:
+   - automation.lights_turn_on_spare_bedroom_based_on_movement
+   - automation.lights_turn_off_spare_bedroom_after_5_min
