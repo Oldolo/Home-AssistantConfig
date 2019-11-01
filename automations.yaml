@@ -448,6 +448,25 @@
       - group.motion_spare_bedroom
 
 #Doorbell
+- alias: 'Doorbell - Halloween'
+  trigger:
+    platform: event
+    event_type: deconz_event
+    event_data:
+      id: smart_switch
+  action:
+    - service: media_player.play_media
+      data:
+        entity_id: media_player.bad
+        media_content_id: !secret evilaugh
+        media_content_type: audio/mp3
+    - service: notify.all
+      data:
+        message: "Noen ringer på døra"
+        data:
+          push:
+            category: "doorbell"
+
 - alias: 'Doorbell - Ring doorbell'
   trigger:
     platform: event

@@ -1,22 +1,43 @@
-halloween_script:
+halloween_sound:
   sequence:
     - service: script.turn_on
       data:
-        entity_id: script.flash_halloween
-    - delay: '00:00:15'
+        entity_id: start_halloween_sound
+    - delay: '00:01:10'
     - service: script.turn_on
       data:
-        entity_id: script.halloween_loop
-halloween_loop:
+        entity_id: script.halloween_sound_loop
+halloween_sound_loop:
   sequence:
     - service: script.turn_on
       data:
-        entity_id: script.halloween_script
-flash_halloween:
+        entity_id: script.halloween_sound
+start_halloween_sound:
   sequence:
-    - service: light.turn_on
+    - service: media_player.play_media
       data:
-        entity_id: light.gjesterom_tak
-        brightness: 175
-        rgb_color: [254, 128, 0]
-        flash: long
+        entity_id: media_player.stue
+        media_content_id: !secret halloweensound
+        media_content_type: audio/mp3
+
+no_sound:
+  sequence:
+    - service: script.turn_on
+      data:
+        entity_id: script.start_no_sound
+    - delay: '00:00:50'
+    - service: script.turn_on
+      data:
+        entity_id: script.no_sound_loop
+no_sound_loop:
+  sequence:
+    - service: script.turn_on
+      data:
+        entity_id: script.no_sound
+start_no_sound:
+  sequence:
+    - service: media_player.play_media
+      data:
+        entity_id: media_player.bad
+        media_content_id: !secret nosound
+        media_content_type: audio/mp3

@@ -149,7 +149,9 @@ google:
 
 hacs:
   token: !secret hacs_token
-
+  appdaemon: true
+  python_script: true
+  theme: true
 http:
   base_url: !secret base_url
   ssl_certificate: /ssl/fullchain.pem
