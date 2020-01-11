@@ -145,7 +145,7 @@
        entity_id: media_player.alle
        data:
          message: 'God tur! Jeg setter ned varmen litt her hjemme, men skrur den opp igjen til dere kommer hjem'
-    - service: notify.ios_oleandre
+    - service: notify.mobile_app_ole_andre
       data:
         message: "Slår av varmen"
 
@@ -169,7 +169,7 @@
     - service: input_boolean.turn_off
       data:
         entity_id: input_boolean.ferie
-    - service: notify.ios_oleandre
+    - service: notify.mobile_app_ole_andre
       data:
         message: "Varmer opp hjemme"
 
@@ -361,7 +361,7 @@
 
 #Lights
 
-- alias: Lights - Turn on bedroom based on movement
+- alias: 'Lights - Turn on bedroom based on movement'
   trigger:
     platform: state
     entity_id: binary_sensor.presence_17
@@ -379,7 +379,7 @@
     service: light.turn_on
     entity_id: light.soverom_tak
 
-- alias: Lights - Turn off bedroom after 2 min
+- alias: 'Lights - Turn off bedroom after 2 min'
   trigger:
     platform: state
     entity_id: binary_sensor.presence_17
@@ -394,7 +394,7 @@
     service: light.turn_off
     entity_id: light.soverom_tak
 
-- alias: Lights - Turn on spare bedroom based on movement
+- alias: 'Lights - Turn on spare bedroom based on movement'
   trigger:
     platform: state
     entity_id: binary_sensor.presence_15
@@ -538,13 +538,13 @@
      condition: and
      conditions:
        - condition: state
-         entity_id: sensor.avfallsor_mixed_1001_96_937_0
+         entity_id: sensor.avfallsor_mixed_282087
          state: '1'
        - condition: numeric_state
-         entity_id: sensor.avfallsor_metal_1001_96_937_0
+         entity_id: sensor.avfallsor_metal_282087
          above: '1'
        - condition: numeric_state
-         entity_id: sensor.avfallsor_paper_1001_96_937_0
+         entity_id: sensor.avfallsor_paper_282087
          above: '1'
   action:
     - service: notify.all
@@ -565,7 +565,7 @@
     at: '21:00:00'
   condition:
   - condition: state
-    entity_id: sensor.avfallsor_paper_1001_96_937_0
+    entity_id: sensor.avfallsor_paper_282087
     state: '1'
   action:
     - service: notify.all
@@ -586,7 +586,7 @@
     at: '21:00:00'
   condition:
   - condition: state
-    entity_id: sensor.avfallsor_metal_1001_96_937_0
+    entity_id: sensor.avfallsor_metal_282087
     state: '1'
   action:
     - service: notify.all
@@ -607,7 +607,7 @@
     at: '06:15:00'
   condition:
   - condition: state
-    entity_id: sensor.avfallsor_mixed_1001_96_937_0
+    entity_id: sensor.avfallsor_mixed_282087
     state: '0'
   action:
     - service: notify.all
@@ -620,7 +620,7 @@
       entity_id: binary_sensor.updater
       to: 'on'
   action:
-    - service: notify.ios_oleandre
+    - service: notify.mobile_app_ole_andre
       data:
         message: "Ny oppdatering for HassIO"
 
@@ -644,7 +644,7 @@
     zone: zone.jobb
     entity_id: device_tracker.oleandre
   action:
-    - service: notify.ios_christina
+    - service: notify.mobile_app_christina
       data:
         message: "Ole Andre er nok på vei hjem. Hjemme {{ states('sensor.oleandre_time_of_arrival') }}"
     - service: media_player.volume_set
@@ -676,7 +676,7 @@
          after: '21:00:00'
          before: '23:00:00'
   action:
-    - service: notify.ios_oleandre
+    - service: notify.mobile_app_ole_andre
       data:
         message: "Christina er nok på vei hjem. Hjemme {{ states('sensor.christina_time_of_arrival') }}"
     - service: media_player.volume_set
@@ -688,14 +688,48 @@
        data:
          message: 'Christina har reist fra jobb, jeg tror nok hun er på vei hjem'
 
-- alias: 'Shortcuts Webhook Call Service'
+- alias: 'Webhook - Disable Autolight spare bedroom'
   trigger:
     platform: webhook
-    webhook_id: shortcuts_notify
+    webhook_id: spare_bedroom_disable
+  condition:
+       - condition: state
+         entity_id: group.motion_spare_bedroom
+         state: 'on'
   action:
-    - service: notify.ios_oleandre
+    - service: homeassistant.turn_off
+      entity_id: group.motion_spare_bedroom
+    - service: notify.mobile_app_ole_andre
       data:
-        message: "Test Shortcuts"
+        message: "Automatisk lys satt av"
+
+- alias: 'Webhook - Enable Autolight spare bedroom'
+  trigger:
+    platform: webhook
+    webhook_id: spare_bedroom_enable
+  condition:
+       - condition: state
+         entity_id: group.motion_spare_bedroom
+         state: 'off'
+  action:
+    - service: homeassistant.turn_on
+      entity_id: group.motion_spare_bedroom
+    - service: notify.mobile_app_ole_andre
+      data:
+        message: "Automatisk lys satt på"
+
+- alias: 'Webhook - Start heating upsen'
+  trigger:
+    platform: webhook
+    webhook_id: charge_upsen
+  action:
+    - service: notify.all
+      data:
+        message: "Varmer Upsen"
+    - service: switch.turn_on
+      entity_id: switch.upsen_climatisation
+    - service: switch.turn_on
+      entity_id: switch.upsen_window_heater
 
 
 # Car
@@ -735,31 +769,6 @@
       data:
         message: "Ville bare si at det er dyrt å lade bilen nå :)"
 
-- alias: 'Car - Start heating on upsen'
-  trigger:
-    - platform: state
-      entity_id: sensor.next_turnusstart_min
-      to: '40'
-  condition:
-     condition: and
-     conditions:
-       - condition: numeric_state
-         entity_id: sensor.netatmo_ute_temperature
-         below: 10
-       - condition: state
-         entity_id: sensor.next_turnusstart_dager
-         state: '0'
-       - condition: state
-         entity_id: sensor.next_turnusstart_timer
-         state: '0'
-  action:
-    - service: notify.all
-      data:
-        message: "Varmer Upsen"
-    - service: switch.turn_on
-      entity_id: switch.upsen_climatisation
-    - service: switch.turn_on
-      entity_id: switch.upsen_window_heater
 
 - alias: 'Car - Start heating leaf at work'
   trigger:
@@ -775,7 +784,7 @@
          entity_id: person.ole_andre
          state: 'jobb'
   action:
-    - service: notify.ios_oleandre
+    - service: notify.mobile_app_ole_andre
       data:
         message: "Varme bilen?"
         data:
@@ -810,7 +819,7 @@
          entity_id: person.ole_andre
          state: 'home'
   action:
-    - service: notify.ios_oleandre
+    - service: notify.mobile_app_ole_andre
       data:
         message: "Varmer Leafen"
     - service: switch.turn_on
@@ -869,6 +878,6 @@
       entity_id: binary_sensor.workday_sensor
       state: 'on'
   action:
-    - service: notify.ios_oleandre
+    - service: notify.mobile_app_ole_andre
       data:
         message: "Husk å lade bilen"

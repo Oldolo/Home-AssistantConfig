@@ -13,7 +13,7 @@ resources:
     type: module
   - url: /community_plugin/entur-card/entur-card.js
     type: js
-  - url: /community_plugin/monster-card/monster-card.js
+  - url: /community_plugin/lovelace-auto-entities/auto-entities.js
     type: module
 
 views:
@@ -53,7 +53,7 @@ views:
             name: Automatisk Lys Gjesterom
             icon: mdi:motion-sensor
 
-      - type: custom:monster-card
+      - type: custom:auto-entities
         card:
           type: entities
         filter:
@@ -113,8 +113,6 @@ views:
             name: Rear Window
           - entity: lock.upsen_door_locked
             name: Lås
-          - entity: automation.car_start_heating_on_upsen
-            name: Automatisk varme
 
   - icon: mdi:music
     title: Musikk
@@ -265,11 +263,11 @@ views:
 
       - type: glance
         entities:
-          - entity: sensor.avfallsor_mixed_1001_96_937_0
+          - entity: sensor.avfallsor_mixed_282087
             icon: mdi:trash-can
-          - entity: sensor.avfallsor_paper_1001_96_937_0
+          - entity: sensor.avfallsor_paper_282087
             icon: mdi:recycle
-          - entity: sensor.avfallsor_metal_1001_96_937_0
+          - entity: sensor.avfallsor_metal_282087
             icon: mdi:spray
           - entity: sensor.tomming_bokashi
 
@@ -495,25 +493,8 @@ views:
             name: HACS Oppdateringer
           - entity: binary_sensor.updater
             name: HassIO Oppdatering
-          - entity: sensor.potential_breaking_changes
-            name: Breaking Changes
           - entity: sensor.snapshot_backup
             name: Backup
-
-      - type: custom:monster-card
-        card:
-          type: entities
-          show_header_toggle: false
-        filter:
-          include:
-            - entity_id: '*battery_level*'
-              state: '< 35'
-            - entity_id: '*battery_percent*'
-              attributes:
-              state: '< 35'
-          exclude:
-            - entity_id: '*iphone*'
-            - entity_id: 'sensor.upsen_battery_level'
 
 
       - type: entities

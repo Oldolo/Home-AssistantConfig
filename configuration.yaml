@@ -93,7 +93,7 @@ person:
       - device_tracker.oleandre_wifi
   - name: Christina
     id: 008
-    user_id: 3a0c8cfb0d104f0facf394fb9030c6d7
+    user_id: b682c54dda2f4322b3dfdbf8def28927
     device_trackers:
       - device_tracker.christina
       - device_tracker.christina_wifi
@@ -102,8 +102,8 @@ notify:
   - name: all
     platform: group
     services:
-      - service: ios_oleandre
-      - service: ios_christina
+      - service: mobile_app_ole_andre
+      - service: mobile_app_christina
 
 binary_sensor:
   - platform: workday
@@ -147,11 +147,7 @@ google:
   client_secret: !secret google_secretID
   track_new_calendar: false
 
-hacs:
-  token: !secret hacs_token
-  appdaemon: true
-  python_script: true
-  theme: true
+
 http:
   base_url: !secret base_url
   ssl_certificate: /ssl/fullchain.pem
@@ -231,14 +227,6 @@ input_boolean:
 
 #Sensor
 sensor:
-
-  - platform: attributes
-    attribute: battery_level
-    unit_of_measurement: "%"
-    entities:
-      - zwave.poly_control_danalock_v3_btze
-
-  - platform: avfallsor
 
   - platform: history_stats
     name: timer_mandag
@@ -419,17 +407,6 @@ sensor:
         {% set minutes = states('sensor.christina_hjemme') | int %}
         {{ (as_timestamp(now()) + (minutes * 60)) | timestamp_custom('%H:%M') }}
 
-      next_turnusstart_dager:
-        value_template: '{{ (as_timestamp(states.calendar.turnus_christina.attributes.start_time) | timestamp_custom("%j") | int) - (as_timestamp(now()) | timestamp_custom("%j") | int) }}'
-        entity_id: sensor.time_date
-
-      next_turnusstart_timer:
-        value_template: '{{ (as_timestamp(states.calendar.turnus_christina.attributes.start_time) | timestamp_custom("%H") | int) - (as_timestamp(now()) | timestamp_custom("%H") | int) }}'
-        entity_id: sensor.time_date
-
-      next_turnusstart_min:
-        value_template: '{{ (as_timestamp(states.calendar.turnus_christina.attributes.start_time) | timestamp_custom("%M") | int) - (as_timestamp(now()) | timestamp_custom("%M") | int) }}'
-        entity_id: sensor.time_date
 
 # Include
 cloud: !include cloud.yaml
